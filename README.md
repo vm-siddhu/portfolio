@@ -42,3 +42,6 @@ A fully responsive personal portfolio website built with HTML5 and CSS3 (Flexbox
 - Implementing **CSS Variables** for consistent theming.
 - structuring a project with a proper **Git workflow** (Feature branches, PRs).
 - Creating smooth **CSS Animations** (`@keyframes`) for better user experience.
+
+## 📫 Contact
+Feel free to reach out if you want to collaborate!
