@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work | Siddharth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        .project-card {
+            background-color: var(--color-bg-light);
+            padding: 2rem;
+            border-radius: 4px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .folder-icon {
+            color: var(--color-primary);
+            font-size: 40px;
+        }
+
+        .project-title {
+            color: var(--color-text-light);
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .project-desc {
+            color: var(--color-text-dim);
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .project-tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-dim);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">&lt;S/&gt;</a>
+            <div class="menu-toggle" id="mobile-menu">&#9776;</div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link"><span>01.</span>Home</a></li>
+                <li><a href="about.html" class="nav-link"><span>02.</span>About</a></li>
+                <li><a href="projects.html" class="nav-link"><span>03.</span>Work</a></li>
+                <li><a href="contact.html" class="nav-link"><span>04.</span>Contact</a></li>
+                <li><a href="contact.html" class="btn">Resume</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="container" style="padding: 100px 20px;">
+        <h2 style="font-size: 32px; color: var(--color-text-light); display: flex; align-items: center;">
+            <span
+                style="color: var(--color-primary); font-family: var(--font-mono); font-size: 20px; margin-right: 10px;">03.</span>
+            Some Things I've Built
+            <span
+                style="height: 1px; background: var(--color-text-dim); flex: 1; margin-left: 20px; opacity: 0.3;"></span>
+        </h2>
+
+        <div class="projects-grid">
+            <!-- Card 1 -->
+            <div class="project-card">
+                <header class="project-header">
+                    <div class="folder-icon">&#128193;</div> <!-- Folder Unicode -->
+                    <div style="color: var(--color-text-dim);">&#128279;</div> <!-- Link Unicode -->
+                </header>
+                <h3 class="project-title">Time to Have More Fun</h3>
+                <p class="project-desc">A single page web app for helping me choose where to travel, built with Next.js,
+                    Firebase, and Tailwind CSS.</p>
+                <ul class="project-tech-list">
+                    <li>Next.js</li>
+                    <li>Tailwind</li>
+                    <li>Firebase</li>
+                </ul>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="project-card">
+                <header class="project-header">
+                    <div class="folder-icon">&#128193;</div>
+                    <div style="color: var(--color-text-dim);">&#128279;</div>
+                </header>
+                <h3 class="project-title">Spotify Profile</h3>
+                <p class="project-desc">A web app for visualizing personalized Spotify data. View your top artists, top
+                    tracks, recently played tracks, and detailed audio information.</p>
+                <ul class="project-tech-list">
+                    <li>React</li>
+                    <li>Express</li>
+                    <li>Spotify API</li>
+                </ul>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="project-card">
+                <header class="project-header">
+                    <div class="folder-icon">&#128193;</div>
+                    <div style="color: var(--color-text-dim);">&#128279;</div>
+                </header>
+                <h3 class="project-title">Halcyon Theme</h3>
+                <p class="project-desc">A minimal, dark blue theme for VS Code, Sublime Text, Atom, iTerm, and more.
+                    Available on Visual Studio Marketplace.</p>
+                <ul class="project-tech-list">
+                    <li>VS Code</li>
+                    <li>Sublime Text</li>
+                    <li>Atom</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
