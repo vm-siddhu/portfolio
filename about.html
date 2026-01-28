@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Siddharth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">&lt;S/&gt;</a>
+            <div class="menu-toggle" id="mobile-menu">&#9776;</div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link"><span>01.</span>Home</a></li>
+                <li><a href="about.html" class="nav-link"><span>02.</span>About</a></li>
+                <li><a href="projects.html" class="nav-link"><span>03.</span>Work</a></li>
+                <li><a href="contact.html" class="nav-link"><span>04.</span>Contact</a></li>
+                <li><a href="contact.html" class="btn">Resume</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="container" style="padding-top: 100px; padding-bottom: 100px;">
+        <h2
+            style="font-size: 32px; color: var(--color-text-light); margin-bottom: 40px; display: flex; align-items: center;">
+            <span
+                style="color: var(--color-primary); font-family: var(--font-mono); font-size: 20px; margin-right: 10px;">02.</span>
+            About Me
+            <span
+                style="height: 1px; background: var(--color-text-dim); flex: 1; margin-left: 20px; opacity: 0.3;"></span>
+        </h2>
+
+        <div style="display: flex; gap: 50px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px;">
+                <p style="color: var(--color-text-dim); margin-bottom: 20px;">
+                    Hello! My name is Siddharth and I enjoy creating things that live on the internet. My interest in
+                    web development started back in 2020 when I decided to try editing custom Tumblr themes — turns out
+                    hacking together HTML & CSS was quite fun!
+                </p>
+                <p style="color: var(--color-text-dim); margin-bottom: 20px;">
+                    Fast-forward to today, and I've had the privilege of working at an advertising agency, a start-up, a
+                    huge corporation, and a student-led design studio.
+                </p>
+                <p style="color: var(--color-text-dim); margin-bottom: 20px;">
+                    Here are a few technologies I've been working with recently:
+                </p>
+
+                <ul
+                    style="display: grid; grid-template-columns: repeat(2, minmax(140px, 200px)); gap: 10px; font-family: var(--font-mono); font-size: 13px; color: var(--color-text-dim);">
+                    <li style="position: relative; padding-left: 20px;">JavaScript (ES6+)</li>
+                    <li style="position: relative; padding-left: 20px;">React</li>
+                    <li style="position: relative; padding-left: 20px;">Node.js</li>
+                    <li style="position: relative; padding-left: 20px;">TypeScript</li>
+                    <li style="position: relative; padding-left: 20px;">HTML & CSS</li>
+                    <li style="position: relative; padding-left: 20px;">MongoDB</li>
+                </ul>
+            </div>
+
+            <div style="flex: 1; min-width: 300px; display: flex; justify-content: center;">
+                <div style="position: relative; width: 300px; height: 300px;">
+                    <div
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 2px solid var(--color-primary); border-radius: 4px; top: 20px; left: 20px; z-index: -1;">
+                    </div>
+                    <img src="https://via.placeholder.com/300x300/112240/64ffda?text=Photo" alt="Profile"
+                        style="border-radius: 4px; width: 100%; filter: grayscale(100%) contrast(1.1) brightness(0.9);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
