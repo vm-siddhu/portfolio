@@ -11,59 +11,7 @@
         href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500&family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 50px;
-        }
-
-        .project-card {
-            background-color: var(--color-bg-light);
-            padding: 2rem;
-            border-radius: 4px;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .project-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .folder-icon {
-            color: var(--color-primary);
-            font-size: 40px;
-        }
-
-        .project-title {
-            color: var(--color-text-light);
-            font-size: 22px;
-            margin-bottom: 20px;
-        }
-
-        .project-desc {
-            color: var(--color-text-dim);
-            font-size: 15px;
-            margin-bottom: 20px;
-        }
-
-        .project-tech-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            font-family: var(--font-mono);
-            font-size: 12px;
-            color: var(--color-text-dim);
-        }
-    </style>
+    <link rel="stylesheet" href="css/projects.css">
 </head>
 
 <body>
@@ -73,116 +21,93 @@
             <a href="index.html" class="logo">&lt;S/&gt;</a>
             <div class="menu-toggle" id="mobile-menu">&#9776;</div>
             <ul class="nav-links">
-                <li><a href="index.html" class="nav-link"><span>01.</span>Home</a></li>
-                <li><a href="about.html" class="nav-link"><span>02.</span>About</a></li>
-                <li><a href="projects.html" class="nav-link"><span>03.</span>Work</a></li>
-                <li><a href="contact.html" class="nav-link"><span>04.</span>Contact</a></li>
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="projects.html" class="nav-link">Work</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
                 <li><a href="contact.html" class="btn">Resume</a></li>
             </ul>
         </div>
     </nav>
 
-    <section class="container" style="padding: 100px 20px;">
-        <h2 style="font-size: 32px; color: var(--color-text-light); display: flex; align-items: center;">
-            <span
-                style="color: var(--color-primary); font-family: var(--font-mono); font-size: 20px; margin-right: 10px;">03.</span>
+    <section class="container projects-section">
+        <h2 class="section-title">
+            <span class="section-number">03.</span>
             Some Things I've Built
-            <span
-                style="height: 1px; background: var(--color-text-dim); flex: 1; margin-left: 20px; opacity: 0.3;"></span>
+            <span class="title-line"></span>
         </h2>
 
         <div class="projects-grid">
-            <!-- Card 1 -->
-            <div class="project-card">
-                <header class="project-header">
-                    <div class="folder-icon">&#128193;</div> <!-- Folder Unicode -->
-                    <div style="color: var(--color-text-dim);">&#128279;</div> <!-- Link Unicode -->
-                </header>
-                <h3 class="project-title">Time to Have More Fun</h3>
-                <p class="project-desc">A single page web app for helping me choose where to travel, built with Next.js,
-                    Firebase, and Tailwind CSS.</p>
-                <ul class="project-tech-list">
-                    <li>Next.js</li>
-                    <li>Tailwind</li>
-                    <li>Firebase</li>
-                </ul>
-            </div>
-
-            <!-- Card 2 -->
             <div class="project-card">
                 <header class="project-header">
                     <div class="folder-icon">&#128193;</div>
-                    <div style="color: var(--color-text-dim);">&#128279;</div>
+                    <div class="external-icon">&#128279;</div>
                 </header>
-                <h3 class="project-title">Spotify Profile</h3>
-                <p class="project-desc">A web app for visualizing personalized Spotify data. View your top artists, top
-                    tracks, recently played tracks, and detailed audio information.</p>
+                <h3 class="project-title">Pet Adoption and Care System</h3>
+                <p class="project-desc">A web-based application for pet adoption and care. Features include ML-based
+                    recommendations for pet care parameters and an intuitive interface.</p>
                 <ul class="project-tech-list">
-                    <li>React</li>
-                    <li>Express</li>
-                    <li>Spotify API</li>
+                    <li>PHP</li>
+                    <li>HTML/CSS</li>
+                    <li>MySQL</li>
+                    <li>ML</li>
                 </ul>
             </div>
-
-            <!-- Card 3 -->
             <div class="project-card">
                 <header class="project-header">
                     <div class="folder-icon">&#128193;</div>
-                    <div style="color: var(--color-text-dim);">&#128279;</div>
+                    <div class="external-icon">&#128279;</div>
                 </header>
-                <h3 class="project-title">Halcyon Theme</h3>
-                <p class="project-desc">A minimal, dark blue theme for VS Code, Sublime Text, Atom, iTerm, and more.
-                    Available on Visual Studio Marketplace.</p>
+                <h3 class="project-title">Pizza Sales Dashboard</h3>
+                <p class="project-desc">Data visualization dashboard to analyze customer satisfaction, inventory
+                    management, and sales trends to improve business strategies.</p>
                 <ul class="project-tech-list">
-                    <li>VS Code</li>
-                    <li>Sublime Text</li>
-                    <li>Atom</li>
+                    <li>Tableau</li>
+                    <li>SQL Server</li>
+                    <li>Data Analytics</li>
+                </ul>
+            </div>
+            <div class="project-card">
+                <header class="project-header">
+                    <div class="folder-icon">&#128193;</div>
+                    <div class="external-icon">&#128279;</div>
+                </header>
+                <h3 class="project-title">Hotel Management System</h3>
+                <p class="project-desc">A desktop application for managing hotel resources, rooms, employees, and
+                    customers with a robust MySQL backend.</p>
+                <ul class="project-tech-list">
+                    <li>Java</li>
+                    <li>AWT/Swing</li>
+                    <li>MySQL</li>
                 </ul>
             </div>
         </div>
     </section>
-
-    <!-- Image Gallery Section -->
-    <section class="container" style="padding-bottom: 100px;">
-        <h2
-            style="font-size: 32px; color: var(--color-text-light); margin-bottom: 40px; display: flex; align-items: center;">
-            <span
-                style="color: var(--color-primary); font-family: var(--font-mono); font-size: 20px; margin-right: 10px;">04.</span>
+    <section class="container gallery-section">
+        <h2 class="section-title gallery-title">
+            <span class="section-number">04.</span>
             Gallery
-            <span
-                style="height: 1px; background: var(--color-text-dim); flex: 1; margin-left: 20px; opacity: 0.3;"></span>
+            <span class="title-line"></span>
         </h2>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
-            <div style="height: 200px; background: #112240; border-radius: 4px; overflow: hidden; position: relative;">
-                <img src="https://via.placeholder.com/400x300/112240/64ffda?text=Project+A" alt="Gallery 1"
-                    style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: opacity 0.3s; cursor: pointer;"
-                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="" alt="Gallery 1" class="gallery-img">
             </div>
-            <div style="height: 200px; background: #112240; border-radius: 4px; overflow: hidden; position: relative;">
-                <img src="https://via.placeholder.com/400x300/233554/64ffda?text=Project+B" alt="Gallery 2"
-                    style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: opacity 0.3s; cursor: pointer;"
-                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+            <div class="gallery-item">
+                <img src="" alt="Gallery 2" class="gallery-img">
             </div>
-            <div style="height: 200px; background: #112240; border-radius: 4px; overflow: hidden; position: relative;">
-                <img src="https://via.placeholder.com/400x300/112240/64ffda?text=Project+C" alt="Gallery 3"
-                    style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: opacity 0.3s; cursor: pointer;"
-                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+            <div class="gallery-item">
+                <img src="" alt="Gallery 3" class="gallery-img">
             </div>
-            <div style="height: 200px; background: #112240; border-radius: 4px; overflow: hidden; position: relative;">
-                <img src="https://via.placeholder.com/400x300/233554/64ffda?text=Project+D" alt="Gallery 4"
-                    style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: opacity 0.3s; cursor: pointer;"
-                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+            <div class="gallery-item">
+                <img src="" alt="Gallery 4" class="gallery-img">
             </div>
-            <div style="height: 200px; background: #112240; border-radius: 4px; overflow: hidden; position: relative;">
-                <img src="https://via.placeholder.com/400x300/112240/64ffda?text=Project+E" alt="Gallery 5"
-                    style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: opacity 0.3s; cursor: pointer;"
-                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+            <div class="gallery-item">
+                <img src="" alt="Gallery 5" class="gallery-img">
             </div>
-            <div style="height: 200px; background: #112240; border-radius: 4px; overflow: hidden; position: relative;">
-                <img src="https://via.placeholder.com/400x300/233554/64ffda?text=Project+F" alt="Gallery 6"
-                    style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: opacity 0.3s; cursor: pointer;"
-                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+            <div class="gallery-item">
+                <img src="" alt="Gallery 6" class="gallery-img">
             </div>
         </div>
     </section>

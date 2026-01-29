@@ -1,0 +1,119 @@
+/* Projects Page Styles */
+
+.projects-section {
+    padding: 100px 20px;
+}
+
+.section-title {
+    font-size: 32px;
+    color: #ccd6f6;
+    display: flex;
+    align-items: center;
+}
+
+/* Specific to projects page title which has numbers */
+.section-number {
+    color: #64ffda;
+    font-family: 'Fira Code', monospace;
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.title-line {
+    height: 1px;
+    background: #8892b0;
+    flex: 1;
+    margin-left: 20px;
+    opacity: 0.3;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 50px;
+}
+
+.project-card {
+    background-color: #112240;
+    padding: 2rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.folder-icon {
+    color: #64ffda;
+    font-size: 40px;
+}
+
+.external-icon {
+    color: #8892b0;
+}
+
+.project-title {
+    color: #ccd6f6;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.project-desc {
+    color: #8892b0;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+.project-tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: #8892b0;
+}
+
+.gallery-section {
+    padding-bottom: 100px;
+}
+
+.gallery-title {
+    margin-bottom: 40px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.gallery-item {
+    height: 200px;
+    background: #112240;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+    cursor: pointer;
+}
+
+.gallery-img:hover {
+    opacity: 1;
+}
