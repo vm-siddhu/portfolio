@@ -4,113 +4,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Work | Siddharth</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500&family=Inter:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <title>Work | Siddhu Padala</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/projects.css">
 </head>
 
 <body>
-
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="logo">&lt;S/&gt;</a>
-            <div class="menu-toggle" id="mobile-menu">&#9776;</div>
+            <a href="index.html" class="logo">SIDDHU</a>
             <ul class="nav-links">
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="about.html" class="nav-link">About</a></li>
-                <li><a href="projects.html" class="nav-link">Work</a></li>
-                <li><a href="contact.html" class="nav-link">Contact</a></li>
-                <li><a href="contact.html" class="btn">Resume</a></li>
+                <li><a href="projects.html" class="nav-link active">Work</a></li>
+                <li><a href="certificates.html" class="nav-link">Verify</a></li>
+                <li><a href="contact.html" class="nav-link">Talk</a></li>
             </ul>
         </div>
     </nav>
 
-    <section class="container projects-section">
-        <h2 class="section-title">
-            <span class="section-number">03.</span>
-            Some Things I've Built
-            <span class="title-line"></span>
-        </h2>
+    <main class="container" style="padding-top: 15rem;">
+        <header class="reveal">
+            <span class="section-tag">Archive</span>
+            <h1 class="section-title">Selected Lab <br>Observations.</h1>
+        </header>
 
         <div class="projects-grid">
-            <div class="project-card">
-                <header class="project-header">
-                    <div class="folder-icon">&#128193;</div>
-                    <div class="external-icon">&#128279;</div>
-                </header>
-                <h3 class="project-title">Pet Adoption and Care System</h3>
-                <p class="project-desc">A web-based application for pet adoption and care. Features include ML-based
-                    recommendations for pet care parameters and an intuitive interface.</p>
-                <ul class="project-tech-list">
-                    <li>PHP</li>
-                    <li>HTML/CSS</li>
-                    <li>MySQL</li>
-                    <li>ML</li>
-                </ul>
-            </div>
-            <div class="project-card">
-                <header class="project-header">
-                    <div class="folder-icon">&#128193;</div>
-                    <div class="external-icon">&#128279;</div>
-                </header>
-                <h3 class="project-title">Pizza Sales Dashboard</h3>
-                <p class="project-desc">Data visualization dashboard to analyze customer satisfaction, inventory
-                    management, and sales trends to improve business strategies.</p>
-                <ul class="project-tech-list">
-                    <li>Tableau</li>
-                    <li>SQL Server</li>
-                    <li>Data Analytics</li>
-                </ul>
-            </div>
-            <div class="project-card">
-                <header class="project-header">
-                    <div class="folder-icon">&#128193;</div>
-                    <div class="external-icon">&#128279;</div>
-                </header>
-                <h3 class="project-title">Hotel Management System</h3>
-                <p class="project-desc">A desktop application for managing hotel resources, rooms, employees, and
-                    customers with a robust MySQL backend.</p>
-                <ul class="project-tech-list">
-                    <li>Java</li>
-                    <li>AWT/Swing</li>
-                    <li>MySQL</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-    <section class="container gallery-section">
-        <h2 class="section-title gallery-title">
-            <span class="section-number">04.</span>
-            Gallery
-            <span class="title-line"></span>
-        </h2>
 
-        <div class="gallery-grid">
-            <div class="gallery-item">
-                <img src="" alt="Gallery 1" class="gallery-img">
+            <!-- Project 01 -->
+            <div class="project-card reveal">
+                <span class="project-number">01 / DISCOVERY ENGINE</span>
+                <h2 class="project-title">CineScope</h2>
+                <p class="project-desc">
+                    Comprehensive movie explorer using real-time API sync and protected global state.
+                </p>
+                <div class="project-tags">
+                    <span class="tag">MERN Stack</span>
+                    <span class="tag">TMDB</span>
+                </div>
+                <div class="project-actions">
+                    <a href="#" class="btn btn-outline">Preview</a>
+                    <button class="like-btn"><i class="far fa-heart"></i></button>
+                </div>
             </div>
-            <div class="gallery-item">
-                <img src="" alt="Gallery 2" class="gallery-img">
+
+            <!-- Project 02 -->
+            <div class="project-card reveal">
+                <span class="project-number">02 / NATURAL LANGUAGE</span>
+                <h2 class="project-title">Linguist AI</h2>
+                <p class="project-desc">
+                    Full-stack translation suite with persistent session history and multi-region support.
+                </p>
+                <div class="project-tags">
+                    <span class="tag">Google API</span>
+                    <span class="tag">Node.js</span>
+                </div>
+                <div class="project-actions">
+                    <a href="#" class="btn btn-outline">Archive</a>
+                    <button class="like-btn"><i class="far fa-heart"></i></button>
+                </div>
             </div>
-            <div class="gallery-item">
-                <img src="" alt="Gallery 3" class="gallery-img">
+
+            <!-- Project 03 -->
+            <div class="project-card reveal">
+                <span class="project-number">03 / CRM SYSTEMS</span>
+                <h2 class="project-title">Pet Safety Sync</h2>
+                <p class="project-desc">
+                    Centralized management system for animal welfare and adoption tracking.
+                </p>
+                <div class="project-tags">
+                    <span class="tag">PHP</span>
+                    <span class="tag">MySQL</span>
+                </div>
+                <div class="project-actions">
+                    <a href="#" class="btn btn-outline">Study</a>
+                    <button class="like-btn"><i class="far fa-heart"></i></button>
+                </div>
             </div>
-            <div class="gallery-item">
-                <img src="" alt="Gallery 4" class="gallery-img">
-            </div>
-            <div class="gallery-item">
-                <img src="" alt="Gallery 5" class="gallery-img">
-            </div>
-            <div class="gallery-item">
-                <img src="" alt="Gallery 6" class="gallery-img">
-            </div>
+
         </div>
-    </section>
+    </main>
 
     <script src="js/script.js"></script>
 </body>
