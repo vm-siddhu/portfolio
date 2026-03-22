@@ -69,64 +69,63 @@ document.addEventListener('DOMContentLoaded', () => {
         const group = new THREE.Group();
         scene.add(group);
 
-        // === Icosahedron (main centerpiece) ===
-        const icoGeometry = new THREE.IcosahedronGeometry(2.2, 1);
+        // === Icosahedron wireframe (primary supporting visual) ===
+        const icoGeometry = new THREE.IcosahedronGeometry(2.4, 1);
         const icoMaterial = new THREE.MeshBasicMaterial({
             color: 0xffffff,
             wireframe: true,
             transparent: true,
-            opacity: 0.2
+            opacity: 0.14          // reduced — supporting, not dominant
         });
         const icosahedron = new THREE.Mesh(icoGeometry, icoMaterial);
         group.add(icosahedron);
 
-        // === Inner sphere (glow core) ===
-        const sphereGeometry = new THREE.SphereGeometry(1.2, 32, 32);
+        // === Subtle inner sphere glow ===
+        const sphereGeometry = new THREE.SphereGeometry(1.3, 32, 32);
         const sphereMaterial = new THREE.MeshBasicMaterial({
-            color: 0xd4d4d4,
+            color: 0xffffff,
             transparent: true,
-            opacity: 0.06,
+            opacity: 0.03,         // nearly invisible
             wireframe: false
         });
         const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
         group.add(sphere);
 
-        // === Torus ring ===
-        const torusGeometry = new THREE.TorusGeometry(3.5, 0.03, 16, 100);
-        const torusMaterial = new THREE.MeshBasicMaterial({
-            color: 0xa3a3a3,
-            transparent: true,
-            opacity: 0.2
-        });
-        const torus = new THREE.Mesh(torusGeometry, torusMaterial);
-        torus.rotation.x = Math.PI * 0.5;
-        group.add(torus);
+        // === Single orbit ring only (removed the two busier outer rings) ===
+        const torusConfigs = [
+            { radius: 3.8, tube: 0.012, rotationX: Math.PI * 0.5, rotationY: 0, opacity: 0.1, speed: 0.07 }
+        ];
 
-        // === Second Torus ===
-        const torus2Geometry = new THREE.TorusGeometry(4.2, 0.02, 16, 100);
-        const torus2Material = new THREE.MeshBasicMaterial({
-            color: 0x737373,
-            transparent: true,
-            opacity: 0.12
+        const tori = [];
+        torusConfigs.forEach(config => {
+            const geometry = new THREE.TorusGeometry(config.radius, config.tube, 16, 100);
+            const material = new THREE.MeshBasicMaterial({
+                color: 0xffffff,
+                transparent: true,
+                opacity: config.opacity
+            });
+            const torus = new THREE.Mesh(geometry, material);
+            torus.rotation.x = config.rotationX;
+            torus.rotation.y = config.rotationY;
+            group.add(torus);
+            tori.push({ mesh: torus, speed: config.speed });
         });
-        const torus2 = new THREE.Mesh(torus2Geometry, torus2Material);
-        torus2.rotation.x = Math.PI * 0.35;
-        torus2.rotation.y = Math.PI * 0.25;
-        group.add(torus2);
 
-        // === Floating particles ===
+        // === Particle Atmosphere — thinned out and faded ===
         const particlesCount = 200;
         const particlePositions = new Float32Array(particlesCount * 3);
+        
         for (let i = 0; i < particlesCount * 3; i++) {
-            particlePositions[i] = (Math.random() - 0.5) * 20;
+            particlePositions[i] = (Math.random() - 0.5) * 25;
         }
+        
         const particleGeometry = new THREE.BufferGeometry();
         particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
         const particleMaterial = new THREE.PointsMaterial({
-            color: 0xd4d4d4,
+            color: 0xffffff,
             size: 0.03,
             transparent: true,
-            opacity: 0.5,
+            opacity: 0.18,         // halved — barely visible background stars
             sizeAttenuation: true
         });
         const particles = new THREE.Points(particleGeometry, particleMaterial);
@@ -164,34 +163,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const elapsed = clock.getElapsedTime();
 
-            // Smooth mouse follow
-            targetX += (mouseX * 0.3 - targetX) * 0.05;
-            targetY += (mouseY * 0.3 - targetY) * 0.05;
+            // === Advanced Anti-Gravity Lerp Logic ===
+            // Subtly update target based on mouse, but with a floaty bias
+            const floatX = Math.sin(elapsed * 0.5) * 0.1;
+            const floatY = Math.cos(elapsed * 0.4) * 0.1;
+            
+            targetX += (mouseX * 0.5 + floatX - targetX) * 0.05;
+            targetY += (mouseY * 0.5 + floatY - targetY) * 0.05;
 
-            // Rotate geometry
-            icosahedron.rotation.x = elapsed * 0.15 + targetY * 0.5;
-            icosahedron.rotation.y = elapsed * 0.2 + targetX * 0.5;
+            // === Multi-Layered Depth Intensities ===
+            // 1. Central Icosahedron (Moves Least: 0.6)
+            icosahedron.rotation.x = elapsed * 0.15 + targetY * 0.6;
+            icosahedron.rotation.y = elapsed * 0.2 + targetX * 0.6;
+            sphere.rotation.y = -elapsed * 0.08;
 
-            sphere.rotation.y = elapsed * 0.1;
+            // 2. Torus Rings (Moves Most: 1.2 to 1.8)
+            tori.forEach((t, i) => {
+                const intensity = 1.2 + i * 0.3; // Increasing intensity for outer rings
+                t.mesh.rotation.z = elapsed * t.speed;
+                t.mesh.rotation.x = t.mesh.rotation.x + (targetY * 0.005 * intensity);
+                t.mesh.rotation.y = t.mesh.rotation.y + (targetX * 0.005 * intensity);
+                
+                // Add subtle position shift for each layer
+                t.mesh.position.x = targetX * 0.4 * intensity;
+                t.mesh.position.y = targetY * 0.4 * intensity;
+            });
 
-            torus.rotation.z = elapsed * 0.1;
-            torus.rotation.x = Math.PI * 0.5 + Math.sin(elapsed * 0.3) * 0.1;
+            // 3. Particle Field (Background Motion: 0.2)
+            particles.rotation.y = elapsed * 0.02 + targetX * 0.2;
+            particles.rotation.x = elapsed * 0.01 + targetY * 0.2;
+            particles.position.x = targetX * 0.8;
+            particles.position.y = targetY * 0.8;
 
-            torus2.rotation.z = -elapsed * 0.08;
-            torus2.rotation.y = Math.PI * 0.25 + Math.cos(elapsed * 0.2) * 0.1;
+            // Anti-Gravity Group Floating (Hero Context)
+            group.position.x = 2.5 + targetX * 0.5; 
+            group.position.y = 0.2 + Math.sin(elapsed * 0.6) * 0.4 + targetY * 0.5;
+            group.rotation.y = targetX * 0.2;
+            group.rotation.x = -targetY * 0.1;
 
-            // Floating motion
-            group.position.y = Math.sin(elapsed * 0.4) * 0.3;
-            group.rotation.y = targetX * 0.3;
-            group.rotation.x = targetY * 0.2;
-
-            // Particle rotation
-            particles.rotation.y = elapsed * 0.02;
-            particles.rotation.x = elapsed * 0.01;
-
-            // Pulsing effect on ico
-            const pulse = Math.sin(elapsed * 1.5) * 0.03 + 0.2;
-            icoMaterial.opacity = pulse;
+            // Subtle pulsing — stays in the 0.10–0.16 range
+            icoMaterial.opacity = 0.13 + Math.sin(elapsed * 0.8) * 0.03;
 
             renderer.render(scene, camera);
         }
@@ -204,33 +215,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // =================== GSAP HERO ANIMATIONS ===================
     function triggerHeroAnimations() {
-        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        // Redesigned: Snappier initial delay (0.4s) and more energetic entrance
+        const tl = gsap.timeline({ delay: 0.4, defaults: { ease: 'power4.out', duration: 0.8 } });
 
-        tl.to('.hero__status', {
-            opacity: 1, y: 0, duration: 0.6
-        })
+        tl.fromTo('#heroCanvas', 
+            { opacity: 0, scale: 0.9, filter: 'blur(10px)' },
+            { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1.8 },
+            0
+        )
         .to('.hero__tag', {
-            opacity: 1, y: 0, duration: 0.6
-        }, '-=0.3')
+            opacity: 1, x: 0, duration: 0.6
+        }, 0.2) // Slide in from left
         .to('.hero__title-word', {
-            y: 0, duration: 1.2, stagger: 0.15, ease: 'power4.out'
-        }, '-=0.3')
-        .to('.hero__title-divider', {
-            opacity: 1, duration: 0.8
-        }, '-=0.6')
+            y: 0, opacity: 1, stagger: 0.1, duration: 0.8, ease: 'back.out(1.7)'
+        }, '-=0.4') // Pop with a slight overshoot
         .to('.hero__description', {
-            opacity: 1, y: 0, duration: 0.8
-        }, '-=0.4')
+            opacity: 1, y: 0, duration: 0.7
+        }, '-=0.5')
         .to('.hero__actions', {
-            opacity: 1, y: 0, duration: 0.8
-        }, '-=0.4')
+            opacity: 1, y: 0, stagger: 0.1, duration: 0.7
+        }, '-=0.5')
         .to('.hero__scroll-indicator', {
-            opacity: 1, duration: 0.8
+            opacity: 1, y: 0, duration: 0.8
         }, '-=0.3')
         .fromTo('.hero__social-rail', 
-            { opacity: 0, x: -20 },
+            { opacity: 0, x: -30 },
             { opacity: 1, x: 0, duration: 0.8 }
-        , '-=0.6');
+        , '-=0.5');
     }
 
 
@@ -354,52 +365,135 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // =================== CUSTOM CURSOR ===================
+    // =================== ADVANCED CUSTOM CURSOR ===================
     const cursorOuter = document.getElementById('cursorOuter');
     const cursorInner = document.getElementById('cursorInner');
 
     if (cursorOuter && cursorInner) {
-        let cx = 0, cy = 0;
-        let ox = 0, oy = 0;
+        // Position state
+        let mouseX = 0, mouseY = 0; // Current mouse position
+        let outerX = 0, outerY = 0; // Outer ring position (interpolated)
+        let innerX = 0, innerY = 0; // Inner dot position (interpolated)
+        
+        // Speed/Lag configuration (increased for snappier follow)
+        const outerLerp = 0.25;
+        const innerLerp = 1.0; // Instant follow for the inner dot
+        
+        // Magnetic state
+        let isMagnetic = false;
+        let magneticX = 0, magneticY = 0;
+        let targetScale = 1;
 
-        document.addEventListener('mousemove', (e) => {
-            cx = e.clientX;
-            cy = e.clientY;
-            cursorInner.style.left = cx + 'px';
-            cursorInner.style.top = cy + 'px';
+        // Background elements for parallax
+        const glow1 = document.getElementById('heroGlow1');
+        const glow2 = document.getElementById('heroGlow2');
+        const heroContent = document.querySelector('.hero__content');
+        
+        let bgX = 0, bgY = 0; // Background movement state
+        const bgLerp = 0.05; // Extra smooth for background
+
+        // Mouse Move Listener
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
 
-        function animateCursor() {
-            ox += (cx - ox) * 0.12;
-            oy += (cy - oy) * 0.12;
-            cursorOuter.style.left = ox + 'px';
-            cursorOuter.style.top = oy + 'px';
-            requestAnimationFrame(animateCursor);
+        // Loop for smooth animation
+        function renderCursor() {
+            // Calculate Lerp Movement
+            outerX += (mouseX - outerX) * outerLerp;
+            outerY += (mouseY - outerY) * outerLerp;
+            
+            innerX += (mouseX - innerX) * innerLerp;
+            innerY += (mouseY - innerY) * innerLerp;
+
+            // Background Parallax Logic
+            bgX += (mouseX - window.innerWidth / 2 - bgX) * bgLerp;
+            bgY += (mouseY - window.innerHeight / 2 - bgY) * bgLerp;
+
+            // Apply Cursor transforms
+            cursorOuter.style.transform = `translate3d(${outerX}px, ${outerY}px, 0) translate(-50%, -50%) scale(${targetScale})`;
+            cursorInner.style.transform = `translate3d(${innerX}px, ${innerY}px, 0) translate(-50%, -50%)`;
+
+            // Apply Background transforms
+            if (glow1) {
+                glow1.style.transform = `translate3d(${bgX * 0.08}px, ${bgY * 0.08}px, 0)`;
+            }
+            if (glow2) {
+                glow2.style.transform = `translate3d(${bgX * -0.12}px, ${bgY * -0.12}px, 0)`;
+            }
+
+            requestAnimationFrame(renderCursor);
         }
-        animateCursor();
+        renderCursor();
 
-        // Hover effects on interactive elements
-        const interactables = document.querySelectorAll('a, button, .project-card, input, textarea');
-        interactables.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursorOuter.classList.add('hover');
-                cursorInner.classList.add('hover');
+        // Interaction Observers
+        const updateCursorState = () => {
+            const interactables = document.querySelectorAll('a, button, .project-card, .skill-category, .glass-card, .about__highlight, input, textarea, .hero__social-rail a');
+            
+            interactables.forEach(el => {
+                // Hover Scale Effect
+                el.addEventListener('mouseenter', () => {
+                    cursorOuter.classList.add('hover');
+                    cursorInner.classList.add('hover');
+                    targetScale = 1.2;
+                    
+                    if (el.classList.contains('btn--primary') || el.classList.contains('nav__cta') || el.classList.contains('hero__social-rail a')) {
+                        cursorOuter.classList.add('magnetic');
+                    }
+                });
+
+                el.addEventListener('mouseleave', () => {
+                    cursorOuter.classList.remove('hover');
+                    cursorInner.classList.remove('hover');
+                    cursorOuter.classList.remove('magnetic');
+                    targetScale = 1;
+                });
+
+                // Magnetic Pull (Optional subtlety)
+                el.addEventListener('mousemove', (e) => {
+                    if (el.classList.contains('btn--primary') || el.classList.contains('nav__cta')) {
+                        const rect = el.getBoundingClientRect();
+                        const centerX = rect.left + rect.width / 2;
+                        const centerY = rect.top + rect.height / 2;
+                        
+                        // Slightly pull the cursor target towards center of button
+                        mouseX += (centerX - mouseX) * 0.1;
+                        mouseY += (centerY - mouseY) * 0.1;
+                    }
+                });
             });
-            el.addEventListener('mouseleave', () => {
-                cursorOuter.classList.remove('hover');
-                cursorInner.classList.remove('hover');
-            });
+        };
+
+        updateCursorState();
+        
+        // Re-run observer after dynamic content or preloader dismiss
+        window.addEventListener('load', updateCursorState);
+
+        // Click effects
+        window.addEventListener('mousedown', () => {
+            cursorOuter.classList.add('click');
+            targetScale = 0.8;
         });
-
-        // Click animation
-        document.addEventListener('mousedown', () => cursorOuter.classList.add('click'));
-        document.addEventListener('mouseup', () => cursorOuter.classList.remove('click'));
+        window.addEventListener('mouseup', () => {
+            cursorOuter.classList.remove('click');
+            targetScale = 1;
+        });
+        
+        // Hide on leave window
+        document.addEventListener('mouseleave', () => {
+            cursorOuter.style.opacity = '0';
+            cursorInner.style.opacity = '0';
+        });
+        document.addEventListener('mouseenter', () => {
+            cursorOuter.style.opacity = '1';
+            cursorInner.style.opacity = '1';
+        });
     }
 
 
     // =================== NAVBAR ===================
     const nav = document.getElementById('mainNav');
-    const scrollProgress = document.getElementById('scrollProgress');
 
     window.addEventListener('scroll', () => {
         // Scrolled state
@@ -408,11 +502,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             nav.classList.remove('scrolled');
         }
-
-        // Scroll progress bar
-        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrolled = (window.scrollY / scrollHeight) * 100;
-        if (scrollProgress) scrollProgress.style.width = scrolled + '%';
 
         // Back to top button
         const btt = document.getElementById('backToTop');
@@ -590,39 +679,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // =================== FLOATING PARTICLES (CSS-based) ===================
-    function createParticles() {
-        const container = document.getElementById('heroParticles');
-        if (!container) return;
-
-        for (let i = 0; i < 30; i++) {
-            const particle = document.createElement('div');
-            particle.style.cssText = `
-                position: absolute;
-                width: ${Math.random() * 4 + 1}px;
-                height: ${Math.random() * 4 + 1}px;
-                background: ${Math.random() > 0.5 ? 'rgba(255, 255, 255, 0.25)' : 'rgba(163, 163, 163, 0.2)'};
-                border-radius: 50%;
-                left: ${Math.random() * 100}%;
-                top: ${Math.random() * 100}%;
-                pointer-events: none;
-            `;
-            container.appendChild(particle);
-
-            gsap.to(particle, {
-                y: `random(-80, 80)`,
-                x: `random(-40, 40)`,
-                duration: `random(4, 8)`,
-                opacity: `random(0.2, 0.8)`,
-                repeat: -1,
-                yoyo: true,
-                ease: 'sine.inOut',
-                delay: Math.random() * 3
-            });
-        }
-    }
-
-    createParticles();
+    // FLOATING PARTICLES (CSS-based) — disabled to reduce hero clutter
+    // function createParticles() { ... }
 
 
     // =================== MAGNETIC EFFECT ON BUTTONS ===================
@@ -666,9 +724,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
             
-            // Calculate rotation amount (max 8 degrees to keep it subtle and elegant)
-            const rotateX = ((y - centerY) / centerY) * -8;
-            const rotateY = ((x - centerX) / centerX) * 8;
+            // Calculate rotation amount (further refined: stats highest, general mid, projects lowest)
+            const isStatCard = card.classList.contains('about__stat');
+            const isProjectCard = card.classList.contains('project-card');
+            
+            let intensity = 12; // default
+            if (isStatCard) intensity = 18;
+            if (isProjectCard) intensity = 7; // Reduced for projects section as requested
+            
+            const rotateX = ((y - centerY) / centerY) * -intensity;
+            const rotateY = ((x - centerX) / centerX) * intensity;
             
             // Apply 3D transform properties
             card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
@@ -739,5 +804,114 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 40);
         });
     }
+
+    // =================== GLOBAL LINE-GRID BACKGROUND (Cursor Warp) ===================
+    // Draws a subtle line grid that bends/distorts around the cursor position,
+    // creating a smooth gravity-well / anti-gravity ripple effect.
+    (function initGridBackground() {
+        const canvas = document.getElementById('bgCanvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+
+        // --- Config ---
+        const GRID_SPACING  = 65;       // wider spacing = fewer, more premium-feeling lines
+        const SEGMENTS      = 12;       // smoother warp curves
+        const WARP_RADIUS   = 180;      // px — cursor influence radius
+        const WARP_STRENGTH = 18;       // subtle pull — not distracting
+        const LINE_OPACITY  = 0.022;    // whisper-level opacity, background stays secondary
+        const LINE_COLOR    = '255,255,255';
+        const LERP_SPEED    = 0.06;     // very smooth cursor lag
+
+        // Cursor tracking
+        let rawCX = -9999, rawCY = -9999;
+        let cx = -9999, cy = -9999;     // smoothed cursor position
+
+        window.addEventListener('mousemove', (e) => {
+            rawCX = e.clientX;
+            rawCY = e.clientY;
+        });
+
+        // Resize
+        function resize() {
+            canvas.width  = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(resize, 120);
+        });
+
+        // Displacement function: given a point (px, py) return how much it
+        // should be pulled toward the cursor using a smooth radial falloff.
+        function displace(px, py) {
+            const dx = px - cx;
+            const dy = py - cy;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist >= WARP_RADIUS || dist === 0) return { dx: 0, dy: 0 };
+
+            // Smooth falloff: cosine curve that peaks at centre and is 0 at WARP_RADIUS
+            const t = 1 - dist / WARP_RADIUS;
+            const strength = WARP_STRENGTH * t * t * (3 - 2 * t); // smoothstep
+
+            // Pull TOWARD cursor (inward gravity)
+            return {
+                dx: -(dx / dist) * strength,
+                dy: -(dy / dist) * strength,
+            };
+        }
+
+        // Draw a single warped line between (x0,y0) and (x1,y1)
+        // by splitting it into SEGMENTS sub-segments and displacing each sample point.
+        function drawWarpedLine(x0, y0, x1, y1) {
+            ctx.beginPath();
+            for (let i = 0; i <= SEGMENTS; i++) {
+                const t  = i / SEGMENTS;
+                const px = x0 + (x1 - x0) * t;
+                const py = y0 + (y1 - y0) * t;
+                const d  = displace(px, py);
+                const wx = px + d.dx;
+                const wy = py + d.dy;
+                if (i === 0) ctx.moveTo(wx, wy);
+                else         ctx.lineTo(wx, wy);
+            }
+            ctx.stroke();
+        }
+
+        function draw() {
+            const w = canvas.width;
+            const h = canvas.height;
+
+            ctx.clearRect(0, 0, w, h);
+
+            ctx.strokeStyle = `rgba(${LINE_COLOR}, ${LINE_OPACITY})`;
+            ctx.lineWidth   = 1;
+            ctx.lineCap     = 'butt';
+
+            // Vertical lines
+            for (let x = 0; x <= w + GRID_SPACING; x += GRID_SPACING) {
+                drawWarpedLine(x, 0, x, h);
+            }
+
+            // Horizontal lines
+            for (let y = 0; y <= h + GRID_SPACING; y += GRID_SPACING) {
+                drawWarpedLine(0, y, w, y);
+            }
+        }
+
+        function animate() {
+            // Smooth cursor interpolation
+            cx += (rawCX - cx) * LERP_SPEED;
+            cy += (rawCY - cy) * LERP_SPEED;
+
+            draw();
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    })();
+
 
 });

@@ -62,6 +62,17 @@
     --radius-xl: 28px;
 }
 
+/* =================== Global Background Canvas =================== */
+#bgCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    will-change: transform;
+}
+
 /* =================== Reset & Base =================== */
 *,
 *::before,
@@ -181,56 +192,73 @@ img {
 }
 
 /* =================== Custom Cursor =================== */
-/* Elegant ring + dot replacing the crosshair */
+/* Geometric square reticle — matches grid aesthetic */
 .cursor-outer {
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
     position: fixed;
     top: 0;
     left: 0;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 3px;   /* slight rounding — not a full circle */
     pointer-events: none;
     z-index: 99998;
-    transform: translate(-50%, -50%);
-    transition: transform 0.15s ease-out, border-color 0.3s ease, width 0.3s ease, height 0.3s ease;
-    /* Optional: mix-blend-mode difference for cool contrast */
-    mix-blend-mode: difference;
+    will-change: transform, width, height, opacity;
+    /* NO mix-blend-mode — was rendering invisible on dark bg */
+    transition:
+        width 0.35s var(--ease-out-expo),
+        height 0.35s var(--ease-out-expo),
+        border-color 0.35s var(--ease-out-expo),
+        border-radius 0.35s var(--ease-out-expo),
+        opacity 0.35s var(--ease-out-expo);
 }
 
 .cursor-inner {
-    width: 6px;
-    height: 6px;
-    background: #fff;
+    width: 4px;
+    height: 4px;
+    background: #ffffff;
     border-radius: 50%;
     position: fixed;
     top: 0;
     left: 0;
     pointer-events: none;
     z-index: 99999;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease, transform 0.1s linear;
+    will-change: transform, opacity;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.7);
+    transition:
+        width 0.2s var(--ease-out-expo),
+        height 0.2s var(--ease-out-expo),
+        box-shadow 0.2s var(--ease-out-expo),
+        opacity 0.2s var(--ease-out-expo);
 }
 
-/* Hover over interactive elements */
+/* Hover — same size, border sharpens, dot glows. No jarring expansion. */
 .cursor-outer.hover {
-    width: 50px;
-    height: 50px;
-    border-color: transparent;
-    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.9);
+    background: transparent;
 }
 
+/* Dot stays fully visible and glows brighter on hover */
 .cursor-inner.hover {
-    width: 12px;
-    height: 12px;
-    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 1),
+                0 0 4px  rgba(255, 255, 255, 1);
 }
 
-/* Click styling */
+/* Magnetic — modest growth, no huge 64px jump */
+.cursor-outer.magnetic {
+    width: 40px;
+    height: 40px;
+    border-color: rgba(255, 255, 255, 0.7);
+    border-radius: 5px;
+    background: transparent;
+}
+
+/* Click — compress + white flash */
 .cursor-outer.click {
-    width: 28px;
-    height: 28px;
-    border-color: rgba(255, 255, 255, 0.8);
+    width: 18px;
+    height: 18px;
+    border-color: rgba(255, 255, 255, 1);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 @media (max-width: 768px) {
@@ -573,8 +601,6 @@ img {
 .section {
     padding: var(--section-padding) 0;
     position: relative;
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 10% 100%;
 }
 
 .section::before {
@@ -582,7 +608,15 @@ img {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: linear-gradient(to bottom, var(--bg-primary) 0%, transparent 10%, transparent 90%, var(--bg-primary) 100%);
+    /* Extended fades (25% each side) so sections bleed into neighbours
+       with no hard visible boundary — critical for smooth scrolling feel */
+    background: linear-gradient(
+        to bottom,
+        var(--bg-primary) 0%,
+        transparent 25%,
+        transparent 75%,
+        var(--bg-primary) 100%
+    );
     z-index: 0;
 }
 
@@ -646,8 +680,6 @@ img {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 10% 100%;
 }
 
 .hero__canvas {
@@ -656,6 +688,8 @@ img {
     width: 100%;
     height: 100%;
     z-index: 1;
+    opacity: 0; /* Animated by GSAP on load */
+    pointer-events: none;
 }
 
 .hero__gradient {
@@ -663,11 +697,37 @@ img {
     inset: 0;
     z-index: 2;
     background:
-        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255, 255, 255, 0.03), transparent),
-        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(255, 255, 255, 0.02), transparent),
-        radial-gradient(ellipse 50% 60% at 20% 80%, rgba(255, 255, 255, 0.015), transparent),
-        linear-gradient(180deg, transparent 60%, var(--bg-primary) 100%);
+        /* Left vignette — boosts name + text legibility */
+        linear-gradient(90deg, rgba(5,5,5,0.75) 0%, rgba(5,5,5,0.3) 42%, transparent 68%),
+        /* Generous bottom fade — bleeds into first section gap below */
+        linear-gradient(180deg, transparent 40%, rgba(5,5,5,0.6) 75%, var(--bg-primary) 100%),
+        /* Top fade so nav area merges cleanly */
+        linear-gradient(180deg, rgba(5,5,5,0.35) 0%, transparent 12%);
     pointer-events: none;
+}
+
+.hero__glow {
+    position: absolute;
+    width: clamp(300px, 40vw, 600px);
+    height: clamp(300px, 40vw, 600px);
+    border-radius: 50%;
+    filter: blur(140px);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.06;     /* reduced from 0.15 — barely there */
+    will-change: transform;
+}
+
+.hero__glow--1 {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    top: -10%;
+    left: -10%;
+}
+
+.hero__glow--2 {
+    background: radial-gradient(circle, rgba(163, 163, 163, 0.2) 0%, transparent 70%);
+    bottom: -10%;
+    right: -10%;
 }
 
 /* === Social Rail (left side) === */
