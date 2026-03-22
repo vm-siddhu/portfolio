@@ -136,9 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
         camera.position.z = 7;
         camera.position.y = 0.5;
 
-        // Position group slightly to the right
+        // Position group to the right for split layout
         group.position.x = 2.5;
-        group.position.y = 0;
+        group.position.y = 0.2;
 
         // Mouse interaction
         let mouseX = 0, mouseY = 0;
@@ -206,31 +206,31 @@ document.addEventListener('DOMContentLoaded', () => {
     function triggerHeroAnimations() {
         const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-        tl.to('.hero__title-word', {
-            y: 0,
-            duration: 1.2,
-            stagger: 0.15,
-            ease: 'power4.out'
+        tl.to('.hero__status', {
+            opacity: 1, y: 0, duration: 0.6
         })
-            .to('.hero__tag', {
-                opacity: 1,
-                y: 0,
-                duration: 0.8
-            }, '-=0.8')
-            .to('.hero__description', {
-                opacity: 1,
-                y: 0,
-                duration: 0.8
-            }, '-=0.5')
-            .to('.hero__actions', {
-                opacity: 1,
-                y: 0,
-                duration: 0.8
-            }, '-=0.5')
-            .to('.hero__scroll-indicator', {
-                opacity: 1,
-                duration: 0.8
-            }, '-=0.3');
+        .to('.hero__tag', {
+            opacity: 1, y: 0, duration: 0.6
+        }, '-=0.3')
+        .to('.hero__title-word', {
+            y: 0, duration: 1.2, stagger: 0.15, ease: 'power4.out'
+        }, '-=0.3')
+        .to('.hero__title-divider', {
+            opacity: 1, duration: 0.8
+        }, '-=0.6')
+        .to('.hero__description', {
+            opacity: 1, y: 0, duration: 0.8
+        }, '-=0.4')
+        .to('.hero__actions', {
+            opacity: 1, y: 0, duration: 0.8
+        }, '-=0.4')
+        .to('.hero__scroll-indicator', {
+            opacity: 1, duration: 0.8
+        }, '-=0.3')
+        .fromTo('.hero__social-rail', 
+            { opacity: 0, x: -20 },
+            { opacity: 1, x: 0, duration: 0.8 }
+        , '-=0.6');
     }
 
 
@@ -454,9 +454,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function smoothScrollTo(targetEl, offset = 80) {
         if (!targetEl) return;
         gsap.to(window, {
-            duration: 1,
+            duration: 0.4,
             scrollTo: { y: targetEl, offsetY: offset },
-            ease: 'power3.inOut'
+            ease: 'power2.out'
         });
     }
 
@@ -528,30 +528,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-
-
-    // =================== PROJECT CARD TILT EFFECT ===================
-    const tiltCards = document.querySelectorAll('[data-tilt]');
-
-    tiltCards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-
-            const rotateX = ((y - centerY) / centerY) * -4;
-            const rotateY = ((x - centerX) / centerX) * 4;
-
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
-        });
-
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
-        });
-    });
 
 
     // =================== CONTACT FORM (Web3Forms) ===================
@@ -673,6 +649,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 duration: 0.5,
                 ease: 'elastic.out(1, 0.5)'
             });
+        });
+    });
+
+    // =================== 3D PLATE TILT EFFECT FOR CARDS ===================
+    const tiltCards = document.querySelectorAll('.project-card, .skill-category, .about__highlight, .glass-card, .about__stat');
+    
+    tiltCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            // Get mouse position relative to card boundaries
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Calculate center points
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            // Calculate rotation amount (max 8 degrees to keep it subtle and elegant)
+            const rotateX = ((y - centerY) / centerY) * -8;
+            const rotateY = ((x - centerX) / centerX) * 8;
+            
+            // Apply 3D transform properties
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+        
+        // Reset translation on mouse leave
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        });
+        
+        // Ensure smooth transition on initial hover and leave
+        card.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease';
+        // But remove transition during active mousemove for instant follow
+        card.addEventListener('mouseenter', () => {
+            setTimeout(() => {
+                card.style.transition = 'none';
+            }, 400); // 400ms is the duration of our CSS transition
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease';
         });
     });
 
