@@ -135,9 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
         camera.position.z = 7;
         camera.position.y = 0.5;
 
-        // Position group to the right for split layout
-        group.position.x = 2.5;
-        group.position.y = 0.2;
+        // Responsive group position
+        const isMobile = window.innerWidth <= 992;
+        group.position.x = isMobile ? 0 : 2.5;
+        group.position.y = isMobile ? -1 : 0.2; // Move lower on mobile to be behind/under text
+        group.scale.setScalar(isMobile ? 0.8 : 1);
 
         // Mouse interaction
         let mouseX = 0, mouseY = 0;
@@ -153,6 +155,12 @@ document.addEventListener('DOMContentLoaded', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+
+            // Update responsive position on resize
+            const isMobile = window.innerWidth <= 992;
+            group.position.x = isMobile ? 0 : 2.5;
+            group.position.y = isMobile ? -1 : 0.2;
+            group.scale.setScalar(isMobile ? 0.8 : 1);
         });
 
         // Animation loop
@@ -196,8 +204,12 @@ document.addEventListener('DOMContentLoaded', () => {
             particles.position.y = targetY * 0.8;
 
             // Anti-Gravity Group Floating (Hero Context)
-            group.position.x = 2.5 + targetX * 0.5; 
-            group.position.y = 0.2 + Math.sin(elapsed * 0.6) * 0.4 + targetY * 0.5;
+            const isMobile = window.innerWidth <= 992;
+            const baseX = isMobile ? 0 : 2.5;
+            const baseY = isMobile ? -1 : 0.2;
+
+            group.position.x = baseX + targetX * 0.5; 
+            group.position.y = baseY + Math.sin(elapsed * 0.6) * 0.4 + targetY * 0.5;
             group.rotation.y = targetX * 0.2;
             group.rotation.x = -targetY * 0.1;
 
