@@ -86,6 +86,8 @@ html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    max-width: 100%;
 }
 
 body {
@@ -154,13 +156,18 @@ img {
 
 .preloader-text {
     font-family: var(--font-heading);
-    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-size: clamp(1rem, 4vw, 1.8rem);
     font-weight: 700;
-    letter-spacing: 0.3em;
+    letter-spacing: clamp(0.05em, 0.3em, 0.3em);
     background: var(--gradient-text);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    max-width: 90vw;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .preloader-line {
@@ -778,7 +785,9 @@ img {
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    max-width: var(--container-max);
+    max-width: 100%;        /* prevent any child from exceeding viewport */
+    box-sizing: border-box;
+    overflow: hidden;
     margin: 0 auto;
     padding: 0 var(--container-padding);
     padding-top: 2rem;
@@ -990,25 +999,48 @@ img {
         align-items: center;
         text-align: center;
         padding-top: 4rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
     }
     
     .hero__title {
         text-align: center;
+        font-size: clamp(2.5rem, 10vw, 5rem);
+        width: 100%;
+        overflow-wrap: break-word;
     }
 
     .hero__description {
         text-align: center;
         margin-inline: auto;
+        max-width: 100%;
     }
 
     .hero__actions {
         justify-content: center;
+        width: 100%;
+    }
+
+    .hero__tag-text {
+        font-size: 0.75rem;
+        letter-spacing: 0.12em;
+        padding: 0.5rem 1.2rem;
     }
 }
 
 @media (max-width: 768px) {
     .hero__social-rail {
         display: none;
+    }
+
+    .hero {
+        overflow: hidden;
+    }
+
+    .hero__title {
+        font-size: clamp(2.2rem, 11vw, 3.5rem);
+        overflow-wrap: break-word;
+        word-break: break-word;
     }
     
     .hero__actions {
@@ -2043,9 +2075,145 @@ img {
 }
 
 /* =================== Responsive Fine-tuning =================== */
+
+/* ─── Global overflow guard: fixes horizontal scroll on mobile ─── */
+@media (max-width: 768px) {
+    .section,
+    .hero,
+    .about,
+    .experience,
+    .projects,
+    .skills,
+    .contact,
+    .footer {
+        overflow-x: hidden;
+        max-width: 100%;
+    }
+
+    /* Tighter container padding on small screens */
+    .container {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+
+    /* huge-title sections — "ABOUT", "MY JOURNEY", "SELECTED PROJECTS" etc.
+       These expand beyond viewport width on mobile at clamp(4rem,12vw,8rem) */
+    .huge-title {
+        font-size: clamp(2.8rem, 13vw, 5rem);
+        overflow-wrap: break-word;
+        word-break: break-word;
+        hyphens: auto;
+    }
+
+    .huge-header-layout {
+        margin-bottom: 3rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        overflow: hidden;
+    }
+
+    .huge-header-desc {
+        max-width: 100%;
+        padding-left: 0;
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 1rem;
+    }
+
+    /* Hide About section pseudo-element that bleeds 200px off right edge */
+    .about::before {
+        display: none;
+    }
+
+    .about__stat {
+        padding: 1.25rem;
+    }
+
+    .about__stat-value {
+        font-size: 2rem;
+    }
+
+    .experience__grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .skills__grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .skill-category {
+        padding: 1.75rem;
+    }
+
+    .credentials__grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+
+    .contact__grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .contact__form {
+        padding: 1.5rem;
+    }
+
+    .contact__cv-card {
+        flex-wrap: wrap;
+    }
+
+    .contact__cv-actions {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .footer__top {
+        flex-direction: column;
+        gap: 2rem;
+        text-align: center;
+    }
+
+    .footer__bottom {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+
+    .timeline__item {
+        margin-left: 1rem;
+        padding: 1.25rem;
+    }
+
+    .project-card__info {
+        padding: 1.5rem;
+    }
+
+    .nav__container {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+
+    .back-to-top {
+        bottom: 1.25rem;
+        right: 1.25rem;
+    }
+}
+
+/* ─── Extra-small phones (≤ 480px) ─── */
 @media (max-width: 480px) {
     .hero__title {
-        font-size: clamp(2.8rem, 12vw, 4rem);
+        font-size: clamp(2rem, 13vw, 3rem);
+        overflow-wrap: break-word;
+        word-break: break-word;
+    }
+
+    .huge-title {
+        font-size: clamp(2.4rem, 14vw, 4rem);
     }
 
     .hero__actions {
@@ -2055,6 +2223,20 @@ img {
     .hero__actions .btn {
         width: 100%;
         justify-content: center;
+    }
+
+    .about__stats {
+        grid-template-columns: 1fr;
+    }
+
+    .timeline__header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .preloader-text {
+        font-size: clamp(0.85rem, 5vw, 1.4rem);
+        letter-spacing: 0.1em;
     }
 }
 
