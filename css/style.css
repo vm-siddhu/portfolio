@@ -295,3 +295,42 @@ section {
     margin-bottom: 3rem;
     color: #fff;
 }
+
+/* ─── Global overflow guard for secondary pages ─── */
+html,
+body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    section {
+        padding: 4rem 0;
+        overflow-x: hidden;
+    }
+
+    .responsive-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        overflow: hidden;
+    }
+
+    .responsive-grid-contact {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        overflow: hidden;
+    }
+
+    .project-card {
+        padding: 1.5rem;
+    }
+
+    .section-tag {
+        letter-spacing: 0.15rem;
+    }
+
+    .btn-group {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
