@@ -36,7 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
             duration: 0.8,
             ease: 'power2.inOut',
             onComplete: () => {
-                preloader.style.display = 'none';
+                // Fully remove from DOM so it can never block interactions
+                if (preloader && preloader.parentNode) {
+                    preloader.remove();
+                }
                 document.body.classList.remove('no-scroll');
                 triggerHeroAnimations();
                 // Refresh ScrollTrigger after preloader
@@ -44,6 +47,28 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Safety fallback: ensure preloader is removed even if scripts/assets take too long
+    window.addEventListener('load', () => {
+        const preloaderEl = document.getElementById('preloader');
+        if (preloaderEl) {
+            // Apply fade out then remove
+            preloaderEl.style.transition = 'opacity 0.6s ease, visibility 0.6s ease';
+            preloaderEl.style.opacity = '0';
+            preloaderEl.style.visibility = 'hidden';
+            
+            setTimeout(() => {
+                if (preloaderEl.parentNode) {
+                    preloaderEl.remove();
+                }
+                document.body.classList.remove('no-scroll');
+                // Ensure hero animations trigger if they haven't yet
+                if (typeof triggerHeroAnimations === 'function') {
+                    triggerHeroAnimations();
+                }
+            }, 600);
+        }
+    });
 
     document.body.classList.add('no-scroll');
 
