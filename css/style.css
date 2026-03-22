@@ -138,6 +138,90 @@ body {
     color: #fff;
 }
 
+.pt-responsive {
+    padding-top: 15rem;
+}
+
+@media (max-width: 768px) {
+    .pt-responsive {
+        padding-top: 8rem;
+    }
+}
+
+/* Responsive Grid Utilities for Secondary Pages */
+.responsive-grid-2 {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 6rem;
+    align-items: start;
+}
+
+@media (max-width: 992px) {
+    .responsive-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+}
+
+.responsive-grid-contact {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 8rem;
+    align-items: start;
+}
+
+@media (max-width: 992px) {
+    .responsive-grid-contact {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+    }
+}
+
+/* Mobile Nav for Secondary Pages */
+.nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    z-index: 1002;
+}
+
+.nav-hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: 0.3s;
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    
+    .nav-hamburger {
+        display: flex;
+    }
+    
+    .nav-links.active {
+        display: flex;
+        position: fixed;
+        inset: 0;
+        background: rgba(5, 5, 5, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 1001;
+        gap: 2.5rem;
+    }
+    
+    .nav-links.active .nav-link {
+        font-size: 2rem;
+    }
+}
+
 /* Buttons */
 .btn-group {
     display: flex;
