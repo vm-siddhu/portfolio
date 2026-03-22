@@ -297,10 +297,11 @@ section {
 }
 
 /* ─── Global overflow guard for secondary pages ─── */
-html,
+/* Only set overflow-x:hidden on body, NOT on html.
+   Setting on both html+body makes the browser treat it as a scroll
+   container and breaks all position:fixed elements (nav overlays etc.) */
 body {
     overflow-x: hidden;
-    max-width: 100%;
 }
 
 @media (max-width: 768px) {

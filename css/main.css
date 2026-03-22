@@ -86,9 +86,11 @@ html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-    max-width: 100%;
+    /* NOTE: Do NOT add overflow-x:hidden here.
+       When set on BOTH html+body it breaks position:fixed overlays (mobile menu, cursor).
+       overflow-x:hidden on body alone is sufficient to prevent horizontal scroll. */
 }
+
 
 body {
     background: var(--bg-primary);
