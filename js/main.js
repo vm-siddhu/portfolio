@@ -52,21 +52,15 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('load', () => {
         const preloaderEl = document.getElementById('preloader');
         if (preloaderEl) {
-            // Apply fade out then remove
-            preloaderEl.style.transition = 'opacity 0.6s ease, visibility 0.6s ease';
-            preloaderEl.style.opacity = '0';
-            preloaderEl.style.visibility = 'hidden';
-            
-            setTimeout(() => {
-                if (preloaderEl.parentNode) {
-                    preloaderEl.remove();
-                }
-                document.body.classList.remove('no-scroll');
-                // Ensure hero animations trigger if they haven't yet
-                if (typeof triggerHeroAnimations === 'function') {
-                    triggerHeroAnimations();
-                }
-            }, 600);
+            // Immediate removal to clear any "black screen" issues
+            if (preloaderEl.parentNode) {
+                preloaderEl.remove();
+            }
+            document.body.classList.remove('no-scroll');
+            // Ensure hero animations trigger if they haven't yet
+            if (typeof triggerHeroAnimations === 'function') {
+                triggerHeroAnimations();
+            }
         }
     });
 
@@ -633,13 +627,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (mobileMenu.classList.contains('active')) {
                 document.body.classList.add('no-scroll');
-                gsap.from('.mobile-menu__link', {
-                    y: 30,
-                    opacity: 0,
+                
+                // Use gsap.set + gsap.to to ensure clean animation every time
+                gsap.set('.mobile-menu__link', { opacity: 0, y: 30 });
+                gsap.to('.mobile-menu__link', {
+                    y: 0,
+                    opacity: 1,
                     duration: 0.5,
-                    stagger: 0.08,
+                    stagger: 0.1,
                     ease: 'power3.out',
-                    delay: 0.2
+                    delay: 0.3
                 });
             } else {
                 document.body.classList.remove('no-scroll');
