@@ -92,24 +92,39 @@
         <canvas id="heroCanvas" class="hero__canvas"></canvas>
         <div class="hero__gradient"></div>
 
-        <div class="hero__content">
+        <!-- Side Social Rail -->
+        <div class="hero__social-rail">
+            <a href="https://github.com/vm-siddhu" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://linkedin.com/in/vm-siddhu" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="mailto:siddhupadala163@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+            <span class="hero__social-line"></span>
+        </div>
+
+        <div class="hero__content hero__content--split">
+            <!-- Status Indicator -->
+            <div class="hero__status">
+                <span class="hero__status-dot"></span>
+                <span class="hero__status-text">Available for work</span>
+            </div>
+
+            <!-- Role Badge -->
             <div class="hero__tag">
-                <span class="hero__tag-line"></span>
                 <span class="hero__tag-text">Full-Stack Developer</span>
             </div>
 
+            <!-- Creative Name Treatment -->
             <h1 class="hero__title">
                 <span class="hero__title-line">
                     <span class="hero__title-word" data-delay="0">Siddhu</span>
                 </span>
                 <span class="hero__title-line">
-                    <span class="hero__title-word hero__title-word--outline" data-delay="0.15">Padala.</span>
+                    <span class="hero__title-word hero__title-word--outline" data-delay="0.15">Padala</span>
                 </span>
             </h1>
 
             <p class="hero__description">
-                Building scalable full-stack applications with React, Node.js & MongoDB.
-                <br>B.Tech CSE at Lovely Professional University, India.
+                Crafting immersive digital experiences through elegant code and thoughtful design.
+                <br>Specializing in <strong>high-performance web architecture</strong> and interactive interfaces.
             </p>
 
             <div class="hero__actions">
@@ -145,13 +160,16 @@
     <!-- ===== ABOUT SECTION ===== -->
     <section id="about" class="about section">
         <div class="container">
-            <div class="section__header">
-                <span class="section__tag">
-                    <span class="section__tag-number">01</span>
-                    <span class="section__tag-line"></span>
-                    <span class="section__tag-text">About Me</span>
-                </span>
-                <h2 class="section__title">Building with <br><span class="gradient-text">Purpose.</span></h2>
+            <div class="huge-header-layout">
+                <div class="projects__title-wrapper">
+                    <h2 class="huge-title">
+                        <span class="huge-title-outline">ABOUT</span><br>
+                        <span class="huge-title-solid">ME</span>
+                    </h2>
+                </div>
+                <div class="huge-header-desc">
+                    <p>I build full-stack web applications where scalability meets great user experience. Obsessed with elegant code.</p>
+                </div>
             </div>
 
             <div class="about__grid">
@@ -230,13 +248,16 @@
     <!-- ===== EXPERIENCE SECTION ===== -->
     <section id="experience" class="experience section">
         <div class="container">
-            <div class="section__header">
-                <span class="section__tag">
-                    <span class="section__tag-number">02</span>
-                    <span class="section__tag-line"></span>
-                    <span class="section__tag-text">Experience & Education</span>
-                </span>
-                <h2 class="section__title">Journey <br><span class="gradient-text">So Far.</span></h2>
+            <div class="huge-header-layout">
+                <div class="projects__title-wrapper">
+                    <h2 class="huge-title">
+                        <span class="huge-title-outline">MY</span><br>
+                        <span class="huge-title-solid">JOURNEY</span>
+                    </h2>
+                </div>
+                <div class="huge-header-desc">
+                    <p>Milestones in engineering and education, charting the path from foundational data structures to leading full-stack implementations.</p>
+                </div>
             </div>
 
             <div class="experience__grid">
@@ -325,124 +346,101 @@
     </section>
 
     <!-- ===== PROJECTS SECTION ===== -->
-    <section id="projects" class="projects section">
+    <section id="projects" class="projects">
         <div class="container">
-            <div class="section__header">
-                <span class="section__tag">
-                    <span class="section__tag-number">03</span>
-                    <span class="section__tag-line"></span>
-                    <span class="section__tag-text">Featured Work</span>
-                </span>
-                <h2 class="section__title">Selected <br><span class="gradient-text">Projects.</span></h2>
+            <div class="huge-header-layout">
+                <div class="projects__title-wrapper">
+                    <h2 class="huge-title">
+                        <span class="huge-title-outline">SELECTED</span><br>
+                        <span class="huge-title-solid">PROJECTS</span>
+                    </h2>
+                </div>
+                <div class="huge-header-desc">
+                    <p>Curated selection of technical artifacts exploring the boundaries between functional engineering and digital aesthetics.</p>
+                </div>
             </div>
 
             <div class="projects__grid">
                 <!-- Project 1: CineScope -->
-                <div class="project-card" data-tilt>
-                    <div class="project-card__glow"></div>
-                    <div class="project-card__content">
-                        <div class="project-card__header">
-                            <span class="project-card__number">01</span>
-                            <span class="project-card__category">FULL-STACK</span>
-                        </div>
+                <article class="project-card">
+                    <div class="project-card__image-container">
+                        <img src="assets/project-1.png" alt="CineScope App">
+                        <span class="project-card__category-badge">PLATFORM</span>
+                    </div>
+                    <div class="project-card__info">
                         <h3 class="project-card__title">CineScope</h3>
-                        <p class="project-card__subtitle">Movie Discovery App</p>
                         <p class="project-card__desc">
-                            Architected a responsive single-page application using React and Tailwind CSS,
-                            leveraging the Context API for global state and protected route management. Designed a
-                            RESTful Express backend connected to MongoDB with custom schemas for user registration,
-                            authentication, and personalized movie watchlists. Synchronized local database records
-                            with TMDB API data via Axios, enabling real-time movie search and embedded YouTube trailers.
+                            Architected a responsive single-page application using React and Tailwind CSS, leveraging the Context API for global state. Designed a RESTful Express backend with custom schemas for authentication and personalized movie watchlists. Synchronized with TMDB API data.
                         </p>
                         <div class="project-card__tech">
                             <span class="tech-tag">React</span>
                             <span class="tech-tag">Node.js</span>
                             <span class="tech-tag">MongoDB</span>
-                            <span class="tech-tag">Express</span>
-                            <span class="tech-tag">TMDB API</span>
-                            <span class="tech-tag">Tailwind CSS</span>
                         </div>
-                        <div class="project-card__date">Feb 2026</div>
                         <div class="project-card__actions">
-                            <a href="https://github.com/vm-siddhu" target="_blank" class="project-card__github"
-                                aria-label="View on GitHub">
-                                <i class="fab fa-github"></i>
+                            <a href="https://cinescope-1-kmoz.onrender.com/" target="_blank" class="project-card__link-text">
+                                LIVE LINK <i class="fas fa-external-link-alt"></i>
+                            </a>
+                            <a href="https://github.com/vm-siddhu/CineScope" target="_blank" class="project-card__link-text" style="color: var(--text-secondary);">
+                                GITHUB <i class="fab fa-github"></i>
                             </a>
                         </div>
                     </div>
-                    <div class="project-card__shimmer"></div>
-                </div>
+                </article>
 
                 <!-- Project 2: Language Translator -->
-                <div class="project-card" data-tilt>
-                    <div class="project-card__glow"></div>
-                    <div class="project-card__content">
-                        <div class="project-card__header">
-                            <span class="project-card__number">02</span>
-                            <span class="project-card__category">FULL-STACK</span>
-                        </div>
-                        <h3 class="project-card__title">Language Translator</h3>
-                        <p class="project-card__subtitle">Multi-language Translation Suite</p>
+                <article class="project-card">
+                    <div class="project-card__image-container">
+                        <img src="assets/project-2.png" alt="Translator AI">
+                        <span class="project-card__category-badge">AI ENGINE</span>
+                    </div>
+                    <div class="project-card__info">
+                        <h3 class="project-card__title">Translator</h3>
                         <p class="project-card__desc">
-                            Engineered a full-stack single-page application utilizing React for the interactive
-                            frontend and a Node.js/Express backend to manage API routing. Integrated the Google
-                            Translate API to process text payloads, engineering a dynamic language selection interface
-                            to support multi-language text conversion. Implemented a persistent history-tracking
-                            schema utilizing MongoDB for past translation entries.
+                            Engineered a full-stack single-page application utilizing React for the interactive frontend and a Node.js/Express backend to manage API routing. Integrated the Google Translate API for dynamic multi-language text conversion and persistent history-tracking schema.
                         </p>
                         <div class="project-card__tech">
                             <span class="tech-tag">React</span>
                             <span class="tech-tag">Node.js</span>
-                            <span class="tech-tag">MongoDB</span>
-                            <span class="tech-tag">Express</span>
                             <span class="tech-tag">Google API</span>
                         </div>
-                        <div class="project-card__date">Dec 2025</div>
                         <div class="project-card__actions">
-                            <a href="https://github.com/vm-siddhu" target="_blank" class="project-card__github"
-                                aria-label="View on GitHub">
-                                <i class="fab fa-github"></i>
+                            <a href="https://language-translator-three-beryl.vercel.app/" target="_blank" class="project-card__link-text">
+                                LIVE LINK <i class="fas fa-external-link-alt"></i>
+                            </a>
+                            <a href="https://github.com/vm-siddhu/Language-Translator" target="_blank" class="project-card__link-text" style="color: var(--text-secondary);">
+                                GITHUB <i class="fab fa-github"></i>
                             </a>
                         </div>
                     </div>
-                    <div class="project-card__shimmer"></div>
-                </div>
+                </article>
 
                 <!-- Project 3: Pet Adoption and Care System -->
-                <div class="project-card" data-tilt>
-                    <div class="project-card__glow"></div>
-                    <div class="project-card__content">
-                        <div class="project-card__header">
-                            <span class="project-card__number">03</span>
-                            <span class="project-card__category">WEB APPLICATION</span>
-                        </div>
-                        <h3 class="project-card__title">Pet Adoption & Care</h3>
-                        <p class="project-card__subtitle">Animal Welfare Management System</p>
+                <article class="project-card">
+                    <div class="project-card__image-container">
+                        <img src="assets/project-3.png" alt="Pet Adoption System">
+                        <span class="project-card__category-badge">DATABASE</span>
+                    </div>
+                    <div class="project-card__info">
+                        <h3 class="project-card__title">Pet Care</h3>
                         <p class="project-card__desc">
-                            Constructed a custom full-stack web application employing PHP and JavaScript to process
-                            dynamic pet adoption forms and manage centralized animal listings. Normalized relational
-                            database schemas in MySQL to securely manage user registration data, authentication flows,
-                            and persistent adoption application records. Built a responsive frontend with HTML and CSS,
-                            utilizing PHP scripts to synchronize real-time pet availability data directly from the
-                            database.
+                            Constructed a full-stack web application employing PHP and JavaScript to process dynamic pet adoption forms. Normalized relational database schemas in MySQL to manage user logic, authentication, and synchronize real-time pet availability data directly from the system.
                         </p>
                         <div class="project-card__tech">
-                            <span class="tech-tag">HTML</span>
-                            <span class="tech-tag">CSS</span>
-                            <span class="tech-tag">JavaScript</span>
                             <span class="tech-tag">PHP</span>
                             <span class="tech-tag">MySQL</span>
+                            <span class="tech-tag">JavaScript</span>
                         </div>
-                        <div class="project-card__date">Apr 2025</div>
                         <div class="project-card__actions">
-                            <a href="https://github.com/vm-siddhu" target="_blank" class="project-card__github"
-                                aria-label="View on GitHub">
-                                <i class="fab fa-github"></i>
+                            <a href="http://petfinder.infinityfreeapp.com/" target="_blank" class="project-card__link-text">
+                                LIVE LINK <i class="fas fa-external-link-alt"></i>
+                            </a>
+                            <a href="https://github.com/vm-siddhu/pet-adoption" target="_blank" class="project-card__link-text" style="color: var(--text-secondary);">
+                                GITHUB <i class="fab fa-github"></i>
                             </a>
                         </div>
                     </div>
-                    <div class="project-card__shimmer"></div>
-                </div>
+                </article>
             </div>
         </div>
     </section>
@@ -450,13 +448,16 @@
     <!-- ===== SKILLS SECTION ===== -->
     <section id="skills" class="skills section">
         <div class="container">
-            <div class="section__header">
-                <span class="section__tag">
-                    <span class="section__tag-number">04</span>
-                    <span class="section__tag-line"></span>
-                    <span class="section__tag-text">Tech Stack</span>
-                </span>
-                <h2 class="section__title">Tools & <br><span class="gradient-text">Technologies.</span></h2>
+            <div class="huge-header-layout">
+                <div class="projects__title-wrapper">
+                    <h2 class="huge-title">
+                        <span class="huge-title-outline">TECH</span><br>
+                        <span class="huge-title-solid">STACK</span>
+                    </h2>
+                </div>
+                <div class="huge-header-desc">
+                    <p>The tools, languages, and frameworks powering my digital architecture and continuous integration workflows.</p>
+                </div>
             </div>
 
             <div class="skills__grid">
@@ -636,15 +637,16 @@
     <!-- ===== CONTACT SECTION ===== -->
     <section id="contact" class="contact section">
         <div class="container">
-            <div class="section__header section__header--center">
-                <span class="section__tag">
-                    <span class="section__tag-number">05</span>
-                    <span class="section__tag-line"></span>
-                    <span class="section__tag-text">Get in Touch</span>
-                </span>
-                <h2 class="section__title">Let's Build <br><span class="gradient-text">Together.</span></h2>
-                <p class="section__subtitle">Have a vision you want to bring to life? I'm available for new projects,
-                    collaborations, and opportunities.</p>
+            <div class="huge-header-layout">
+                <div class="projects__title-wrapper">
+                    <h2 class="huge-title">
+                        <span class="huge-title-outline">LET'S</span><br>
+                        <span class="huge-title-solid">TALK</span>
+                    </h2>
+                </div>
+                <div class="huge-header-desc">
+                    <p>Have a vision you want to bring to life? I'm available for new projects, collaborations, and opportunities.</p>
+                </div>
             </div>
 
             <div class="contact__grid">
