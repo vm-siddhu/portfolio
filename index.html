@@ -31,6 +31,9 @@
 </head>
 
 <body>
+    <!-- Global Background Canvas (Dot-Matrix Anti-Gravity) -->
+    <canvas id="bgCanvas" aria-hidden="true"></canvas>
+
     <!-- Preloader -->
     <div id="preloader">
         <div class="preloader-inner">
@@ -44,8 +47,7 @@
     <div class="cursor-outer" id="cursorOuter"></div>
     <div class="cursor-inner" id="cursorInner"></div>
 
-    <!-- Scroll Progress -->
-    <div class="scroll-progress" id="scrollProgress"></div>
+    <!-- Custom Cursor -->
 
     <!-- Navigation -->
     <nav class="nav" id="mainNav">
@@ -91,6 +93,8 @@
     <section id="hero" class="hero">
         <canvas id="heroCanvas" class="hero__canvas"></canvas>
         <div class="hero__gradient"></div>
+        <div class="hero__glow hero__glow--1" id="heroGlow1"></div>
+        <div class="hero__glow hero__glow--2" id="heroGlow2"></div>
 
         <!-- Side Social Rail -->
         <div class="hero__social-rail">
@@ -101,12 +105,6 @@
         </div>
 
         <div class="hero__content hero__content--split">
-            <!-- Status Indicator -->
-            <div class="hero__status">
-                <span class="hero__status-dot"></span>
-                <span class="hero__status-text">Available for work</span>
-            </div>
-
             <!-- Role Badge -->
             <div class="hero__tag">
                 <span class="hero__tag-text">Full-Stack Developer</span>
@@ -131,9 +129,6 @@
                 <a href="#projects" class="btn btn--primary">
                     <span>View Projects</span>
                     <i class="fas fa-arrow-right"></i>
-                </a>
-                <a href="#contact" class="btn btn--ghost">
-                    <span>Get in Touch</span>
                 </a>
                 <a href="assets/Siddhu_Padala_CV.pdf" class="btn btn--ghost" target="_blank" id="viewCvBtn">
                     <span>View CV</span>
@@ -405,7 +400,7 @@
                             <span class="tech-tag">Google API</span>
                         </div>
                         <div class="project-card__actions">
-                            <a href="https://language-translator-three-beryl.vercel.app/" target="_blank" class="project-card__link-text">
+                            <a href="https://language-translator-sigma-five.vercel.app/" target="_blank" class="project-card__link-text">
                                 LIVE LINK <i class="fas fa-external-link-alt"></i>
                             </a>
                             <a href="https://github.com/vm-siddhu/Language-Translator" target="_blank" class="project-card__link-text" style="color: var(--text-secondary);">
@@ -606,7 +601,7 @@
                         <span class="credential-card__year">Oct 2025</span>
                         <h4 class="credential-card__name">Cloud Computing</h4>
                         <p class="credential-card__issuer">NPTEL — Cloud Infrastructure & Services</p>
-                        <a href="#" class="credential-card__link">
+                        <a href="https://drive.google.com/file/d/1yrocIxSiusHrxhyEKgfo7wZFdn-E7J82/view?usp=sharing" target="_blank" class="credential-card__link">
                             <span>View Credential</span>
                             <i class="fas fa-external-link-alt"></i>
                         </a>
@@ -615,7 +610,7 @@
                         <span class="credential-card__year">Sept 2025</span>
                         <h4 class="credential-card__name">Building Blog using MERN Stack</h4>
                         <p class="credential-card__issuer">Udemy — Full-Stack MERN Development</p>
-                        <a href="#" class="credential-card__link">
+                        <a href="https://www.udemy.com/certificate/UC-c643d312-dffc-4437-9ef4-07e49bf6a2ad/" target="_blank" class="credential-card__link">
                             <span>View Credential</span>
                             <i class="fas fa-external-link-alt"></i>
                         </a>
@@ -623,8 +618,18 @@
                     <div class="credential-card glass-card">
                         <span class="credential-card__year">Aug 2025</span>
                         <h4 class="credential-card__name">Master Generative AI and AI Tools</h4>
-                        <p class="credential-card__issuer">Udemy — AI & Generative Tools</p>
-                        <a href="#" class="credential-card__link">
+                        <p class="credential-card__issuer">Infosys Headstart — AI & Generative Tools</p>
+                        <a href="https://infyspringboard.onwingspan.com/public-assets/infosysheadstart/cert/lex_auth_014157693153288192147/1-17226831-f21f-495a-a9a4-891bcb3ad323.pdf" target="_blank" class="credential-card__link">
+                            <span>View Credential</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <!-- New Credential Card: Cipher Schools Training -->
+                    <div class="credential-card glass-card">
+                        <span class="credential-card__year">Jul 2025</span>
+                        <h4 class="credential-card__name">Data Structures & Algorithms</h4>
+                        <p class="credential-card__issuer">Cipher Schools — Intensive Training</p>
+                        <a href="https://www.cipherschools.com/certificate/preview?id=689b5cf094c24c5a4c60a187" target="_blank" class="credential-card__link">
                             <span>View Credential</span>
                             <i class="fas fa-external-link-alt"></i>
                         </a>
