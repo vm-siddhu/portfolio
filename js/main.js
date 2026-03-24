@@ -9,62 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 
-    // =================== PRELOADER ===================
-    const preloader = document.getElementById('preloader');
-    const preloaderCounter = document.querySelector('.preloader-counter');
-    let progress = 0;
-
-    const preloaderInterval = setInterval(() => {
-        progress += Math.random() * 8 + 2;
-        if (progress >= 100) {
-            progress = 100;
-            clearInterval(preloaderInterval);
-            setTimeout(dismissPreloader, 300);
-        }
-        preloaderCounter.textContent = Math.floor(progress) + '%';
-        document.documentElement.style.setProperty('--preloader-progress', progress + '%');
-    }, 60);
-
-    // Add dynamic style for preloader progress
-    const styleSheet = document.createElement('style');
-    styleSheet.textContent = `.preloader-line::after { width: var(--preloader-progress, 0%); }`;
-    document.head.appendChild(styleSheet);
-
-    function dismissPreloader() {
-        gsap.to(preloader, {
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power2.inOut',
-            onComplete: () => {
-                // Fully remove from DOM so it can never block interactions
-                if (preloader && preloader.parentNode) {
-                    preloader.remove();
-                }
-                document.body.classList.remove('no-scroll');
-                triggerHeroAnimations();
-                // Refresh ScrollTrigger after preloader
-                setTimeout(() => ScrollTrigger.refresh(), 100);
-            }
-        });
-    }
-
-    // Safety fallback: ensure preloader is removed even if scripts/assets take too long
-    window.addEventListener('load', () => {
-        const preloaderEl = document.getElementById('preloader');
-        if (preloaderEl) {
-            // Immediate removal to clear any "black screen" issues
-            if (preloaderEl.parentNode) {
-                preloaderEl.remove();
-            }
-            document.body.classList.remove('no-scroll');
-            // Ensure hero animations trigger if they haven't yet
-            if (typeof triggerHeroAnimations === 'function') {
-                triggerHeroAnimations();
-            }
-        }
-    });
-
-    document.body.classList.add('no-scroll');
+    // =================== INIT ===================
+    // No preloader — hero animations fire immediately
+    triggerHeroAnimations();
 
 
     // =================== THREE.JS 3D HERO ===================
@@ -133,11 +80,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // === Particle Atmosphere — thinned out and faded ===
         const particlesCount = 200;
         const particlePositions = new Float32Array(particlesCount * 3);
-        
+
         for (let i = 0; i < particlesCount * 3; i++) {
             particlePositions[i] = (Math.random() - 0.5) * 25;
         }
-        
+
         const particleGeometry = new THREE.BufferGeometry();
         particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
         const particleMaterial = new THREE.PointsMaterial({
@@ -194,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Subtly update target based on mouse, but with a floaty bias
             const floatX = Math.sin(elapsed * 0.5) * 0.1;
             const floatY = Math.cos(elapsed * 0.4) * 0.1;
-            
+
             targetX += (mouseX * 0.5 + floatX - targetX) * 0.05;
             targetY += (mouseY * 0.5 + floatY - targetY) * 0.05;
 
@@ -210,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 t.mesh.rotation.z = elapsed * t.speed;
                 t.mesh.rotation.x = t.mesh.rotation.x + (targetY * 0.005 * intensity);
                 t.mesh.rotation.y = t.mesh.rotation.y + (targetX * 0.005 * intensity);
-                
+
                 // Add subtle position shift for each layer
                 t.mesh.position.x = targetX * 0.4 * intensity;
                 t.mesh.position.y = targetY * 0.4 * intensity;
@@ -227,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const baseX = isMobile ? 0 : 2.5;
             const baseY = isMobile ? -1 : 0.2;
 
-            group.position.x = baseX + targetX * 0.5; 
+            group.position.x = baseX + targetX * 0.5;
             group.position.y = baseY + Math.sin(elapsed * 0.6) * 0.4 + targetY * 0.5;
             group.rotation.y = targetX * 0.2;
             group.rotation.x = -targetY * 0.1;
@@ -249,30 +196,30 @@ document.addEventListener('DOMContentLoaded', () => {
         // Redesigned: Snappier initial delay (0.4s) and more energetic entrance
         const tl = gsap.timeline({ delay: 0.4, defaults: { ease: 'power4.out', duration: 0.8 } });
 
-        tl.fromTo('#heroCanvas', 
+        tl.fromTo('#heroCanvas',
             { opacity: 0, scale: 0.9, filter: 'blur(10px)' },
             { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1.8 },
             0
         )
-        .to('.hero__tag', {
-            opacity: 1, x: 0, duration: 0.6
-        }, 0.2) // Slide in from left
-        .to('.hero__title-word', {
-            y: 0, opacity: 1, stagger: 0.1, duration: 0.8, ease: 'back.out(1.7)'
-        }, '-=0.4') // Pop with a slight overshoot
-        .to('.hero__description', {
-            opacity: 1, y: 0, duration: 0.7
-        }, '-=0.5')
-        .to('.hero__actions', {
-            opacity: 1, y: 0, stagger: 0.1, duration: 0.7
-        }, '-=0.5')
-        .to('.hero__scroll-indicator', {
-            opacity: 1, y: 0, duration: 0.8
-        }, '-=0.3')
-        .fromTo('.hero__social-rail', 
-            { opacity: 0, x: -30 },
-            { opacity: 1, x: 0, duration: 0.8 }
-        , '-=0.5');
+            .to('.hero__tag', {
+                opacity: 1, x: 0, duration: 0.6
+            }, 0.2) // Slide in from left
+            .to('.hero__title-word', {
+                y: 0, opacity: 1, stagger: 0.1, duration: 0.8, ease: 'back.out(1.7)'
+            }, '-=0.4') // Pop with a slight overshoot
+            .to('.hero__description', {
+                opacity: 1, y: 0, duration: 0.7
+            }, '-=0.5')
+            .to('.hero__actions', {
+                opacity: 1, y: 0, stagger: 0.1, duration: 0.7
+            }, '-=0.5')
+            .to('.hero__scroll-indicator', {
+                opacity: 1, y: 0, duration: 0.8
+            }, '-=0.3')
+            .fromTo('.hero__social-rail',
+                { opacity: 0, x: -30 },
+                { opacity: 1, x: 0, duration: 0.8 }
+                , '-=0.5');
     }
 
 
@@ -396,121 +343,49 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // =================== ADVANCED CUSTOM CURSOR ===================
+    // =================== CUSTOM CURSOR ===================
     const cursorOuter = document.getElementById('cursorOuter');
     const cursorInner = document.getElementById('cursorInner');
 
     if (cursorOuter && cursorInner) {
-        // Position state
-        let mouseX = 0, mouseY = 0; // Current mouse position
-        let outerX = 0, outerY = 0; // Outer ring position (interpolated)
-        let innerX = 0, innerY = 0; // Inner dot position (interpolated)
-        
-        // Speed/Lag configuration (increased for snappier follow)
-        const outerLerp = 0.25;
-        const innerLerp = 1.0; // Instant follow for the inner dot
-        
-        // Magnetic state
-        let isMagnetic = false;
-        let magneticX = 0, magneticY = 0;
-        let targetScale = 1;
+        let mouseX = 0, mouseY = 0;
+        let outerX = 0, outerY = 0;
 
-        // Background elements for parallax
-        const glow1 = document.getElementById('heroGlow1');
-        const glow2 = document.getElementById('heroGlow2');
-        const heroContent = document.querySelector('.hero__content');
-        
-        let bgX = 0, bgY = 0; // Background movement state
-        const bgLerp = 0.05; // Extra smooth for background
-
-        // Mouse Move Listener
         window.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
+            // Inner dot follows instantly
+            cursorInner.style.left = mouseX + 'px';
+            cursorInner.style.top = mouseY + 'px';
         });
 
-        // Loop for smooth animation
+        // Outer crosshair follows with smooth lag
         function renderCursor() {
-            // Calculate Lerp Movement
-            outerX += (mouseX - outerX) * outerLerp;
-            outerY += (mouseY - outerY) * outerLerp;
-            
-            innerX += (mouseX - innerX) * innerLerp;
-            innerY += (mouseY - innerY) * innerLerp;
-
-            // Background Parallax Logic
-            bgX += (mouseX - window.innerWidth / 2 - bgX) * bgLerp;
-            bgY += (mouseY - window.innerHeight / 2 - bgY) * bgLerp;
-
-            // Apply Cursor transforms
-            cursorOuter.style.transform = `translate3d(${outerX}px, ${outerY}px, 0) translate(-50%, -50%) scale(${targetScale})`;
-            cursorInner.style.transform = `translate3d(${innerX}px, ${innerY}px, 0) translate(-50%, -50%)`;
-
-            // Apply Background transforms
-            if (glow1) {
-                glow1.style.transform = `translate3d(${bgX * 0.08}px, ${bgY * 0.08}px, 0)`;
-            }
-            if (glow2) {
-                glow2.style.transform = `translate3d(${bgX * -0.12}px, ${bgY * -0.12}px, 0)`;
-            }
-
+            outerX += (mouseX - outerX) * 0.15;
+            outerY += (mouseY - outerY) * 0.15;
+            cursorOuter.style.left = outerX + 'px';
+            cursorOuter.style.top = outerY + 'px';
             requestAnimationFrame(renderCursor);
         }
         renderCursor();
 
-        // Interaction Observers
-        const updateCursorState = () => {
-            const interactables = document.querySelectorAll('a, button, .project-card, .skill-category, .glass-card, .about__highlight, input, textarea, .hero__social-rail a');
-            
-            interactables.forEach(el => {
-                // Hover Scale Effect
-                el.addEventListener('mouseenter', () => {
-                    cursorOuter.classList.add('hover');
-                    cursorInner.classList.add('hover');
-                    targetScale = 1.2;
-                    
-                    if (el.classList.contains('btn--primary') || el.classList.contains('nav__cta') || el.classList.contains('hero__social-rail a')) {
-                        cursorOuter.classList.add('magnetic');
-                    }
-                });
-
-                el.addEventListener('mouseleave', () => {
-                    cursorOuter.classList.remove('hover');
-                    cursorInner.classList.remove('hover');
-                    cursorOuter.classList.remove('magnetic');
-                    targetScale = 1;
-                });
-
-                // Magnetic Pull (Optional subtlety)
-                el.addEventListener('mousemove', (e) => {
-                    if (el.classList.contains('btn--primary') || el.classList.contains('nav__cta')) {
-                        const rect = el.getBoundingClientRect();
-                        const centerX = rect.left + rect.width / 2;
-                        const centerY = rect.top + rect.height / 2;
-                        
-                        // Slightly pull the cursor target towards center of button
-                        mouseX += (centerX - mouseX) * 0.1;
-                        mouseY += (centerY - mouseY) * 0.1;
-                    }
-                });
+        // Hover effects on interactive elements
+        const interactables = document.querySelectorAll('a, button, .project-card, .skill-category, .glass-card, .about__highlight, input, textarea');
+        interactables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOuter.classList.add('hover');
+                cursorInner.classList.add('hover');
             });
-        };
-
-        updateCursorState();
-        
-        // Re-run observer after dynamic content or preloader dismiss
-        window.addEventListener('load', updateCursorState);
-
-        // Click effects
-        window.addEventListener('mousedown', () => {
-            cursorOuter.classList.add('click');
-            targetScale = 0.8;
+            el.addEventListener('mouseleave', () => {
+                cursorOuter.classList.remove('hover');
+                cursorInner.classList.remove('hover');
+            });
         });
-        window.addEventListener('mouseup', () => {
-            cursorOuter.classList.remove('click');
-            targetScale = 1;
-        });
-        
+
+        // Click animation
+        document.addEventListener('mousedown', () => cursorOuter.classList.add('click'));
+        document.addEventListener('mouseup', () => cursorOuter.classList.remove('click'));
+
         // Hide on leave window
         document.addEventListener('mouseleave', () => {
             cursorOuter.style.opacity = '0';
@@ -627,7 +502,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (mobileMenu.classList.contains('active')) {
                 document.body.classList.add('no-scroll');
-                
+
                 // Use gsap.set + gsap.to to ensure clean animation every time
                 gsap.set('.mobile-menu__link', { opacity: 0, y: 30 });
                 gsap.to('.mobile-menu__link', {
@@ -746,38 +621,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // =================== 3D PLATE TILT EFFECT FOR CARDS ===================
     const tiltCards = document.querySelectorAll('.project-card, .skill-category, .about__highlight, .glass-card, .about__stat');
-    
+
     tiltCards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             // Get mouse position relative to card boundaries
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            
+
             // Calculate center points
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            
+
             // Calculate rotation amount (further refined: stats highest, general mid, projects lowest)
             const isStatCard = card.classList.contains('about__stat');
             const isProjectCard = card.classList.contains('project-card');
-            
+
             let intensity = 12; // default
             if (isStatCard) intensity = 18;
             if (isProjectCard) intensity = 7; // Reduced for projects section as requested
-            
+
             const rotateX = ((y - centerY) / centerY) * -intensity;
             const rotateY = ((x - centerX) / centerX) * intensity;
-            
+
             // Apply 3D transform properties
             card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
         });
-        
+
         // Reset translation on mouse leave
         card.addEventListener('mouseleave', () => {
             card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
         });
-        
+
         // Ensure smooth transition on initial hover and leave
         card.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease';
         // But remove transition during active mousemove for instant follow
@@ -840,8 +715,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =================== GLOBAL LINE-GRID BACKGROUND (Cursor Warp) ===================
-    // Draws a subtle line grid that bends/distorts around the cursor position,
-    // creating a smooth gravity-well / anti-gravity ripple effect.
+    // Draws a subtle line grid with tall rectangular cells (height > width).
+    // Bends/distorts around cursor for a smooth gravity-well effect.
     (function initGridBackground() {
         const canvas = document.getElementById('bgCanvas');
         if (!canvas) return;
@@ -849,17 +724,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const ctx = canvas.getContext('2d');
 
         // --- Config ---
-        const GRID_SPACING  = 65;       // wider spacing = fewer, more premium-feeling lines
-        const SEGMENTS      = 12;       // smoother warp curves
-        const WARP_RADIUS   = 180;      // px — cursor influence radius
-        const WARP_STRENGTH = 18;       // subtle pull — not distracting
-        const LINE_OPACITY  = 0.022;    // whisper-level opacity, background stays secondary
-        const LINE_COLOR    = '255,255,255';
-        const LERP_SPEED    = 0.06;     // very smooth cursor lag
+        const GRID_X = 140;           // geometric spacing
+        const GRID_Y = 220;           // slightly taller rectangular vertical pacing 
+        const SEGMENTS = 40;          // higher resolution mapping for smoother curves
+        const WARP_RADIUS = 250;      // wider cursor reach
+        const WARP_STRENGTH = 25;     // slightly stronger pull for dramatic effect
+        const LINE_OPACITY = 0.015;   // barely visible, premium minimal look
+        const LINE_COLOR = '255,255,255';
+        const LERP_SPEED = 0.06;
+        const DRIFT_SPEED = 0.4;      // infinite upward drift speed
+
+        let timeOffset = 0; // Tracks scroll drift
 
         // Cursor tracking
         let rawCX = -9999, rawCY = -9999;
-        let cx = -9999, cy = -9999;     // smoothed cursor position
+        let cx = -9999, cy = -9999;
 
         window.addEventListener('mousemove', (e) => {
             rawCX = e.clientX;
@@ -868,7 +747,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Resize
         function resize() {
-            canvas.width  = window.innerWidth;
+            canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
         resize();
@@ -878,38 +757,34 @@ document.addEventListener('DOMContentLoaded', () => {
             resizeTimer = setTimeout(resize, 120);
         });
 
-        // Displacement function: given a point (px, py) return how much it
-        // should be pulled toward the cursor using a smooth radial falloff.
+        // Displacement function
         function displace(px, py) {
             const dx = px - cx;
             const dy = py - cy;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist >= WARP_RADIUS || dist === 0) return { dx: 0, dy: 0 };
 
-            // Smooth falloff: cosine curve that peaks at centre and is 0 at WARP_RADIUS
             const t = 1 - dist / WARP_RADIUS;
-            const strength = WARP_STRENGTH * t * t * (3 - 2 * t); // smoothstep
+            const strength = WARP_STRENGTH * t * t * (3 - 2 * t);
 
-            // Pull TOWARD cursor (inward gravity)
             return {
                 dx: -(dx / dist) * strength,
                 dy: -(dy / dist) * strength,
             };
         }
 
-        // Draw a single warped line between (x0,y0) and (x1,y1)
-        // by splitting it into SEGMENTS sub-segments and displacing each sample point.
+        // Draw a single warped line
         function drawWarpedLine(x0, y0, x1, y1) {
             ctx.beginPath();
             for (let i = 0; i <= SEGMENTS; i++) {
-                const t  = i / SEGMENTS;
+                const t = i / SEGMENTS;
                 const px = x0 + (x1 - x0) * t;
                 const py = y0 + (y1 - y0) * t;
-                const d  = displace(px, py);
+                const d = displace(px, py);
                 const wx = px + d.dx;
                 const wy = py + d.dy;
                 if (i === 0) ctx.moveTo(wx, wy);
-                else         ctx.lineTo(wx, wy);
+                else ctx.lineTo(wx, wy);
             }
             ctx.stroke();
         }
@@ -920,23 +795,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
             ctx.clearRect(0, 0, w, h);
 
+            // Draw grid lines
             ctx.strokeStyle = `rgba(${LINE_COLOR}, ${LINE_OPACITY})`;
-            ctx.lineWidth   = 1;
-            ctx.lineCap     = 'butt';
+            ctx.lineWidth = 1;
+            ctx.lineCap = 'butt';
 
-            // Vertical lines
-            for (let x = 0; x <= w + GRID_SPACING; x += GRID_SPACING) {
-                drawWarpedLine(x, 0, x, h);
+            // Calculate smooth infinite wrapping offsets
+            const offsetX = (timeOffset * 0.4) % GRID_X;
+            const offsetY = timeOffset % GRID_Y;
+
+            // Vertical lines (moving rightwards slowly)
+            for (let x = -GRID_X; x <= w + GRID_X; x += GRID_X) {
+                drawWarpedLine(x + offsetX, -GRID_Y, x + offsetX, h + GRID_Y);
             }
 
-            // Horizontal lines
-            for (let y = 0; y <= h + GRID_SPACING; y += GRID_SPACING) {
-                drawWarpedLine(0, y, w, y);
+            // Horizontal lines (moving downwards slowly)
+            for (let y = -GRID_Y; y <= h + GRID_Y; y += GRID_Y) {
+                drawWarpedLine(-GRID_X, y + offsetY, w + GRID_X, y + offsetY);
             }
         }
 
         function animate() {
-            // Smooth cursor interpolation
+            timeOffset += DRIFT_SPEED;
+            
             cx += (rawCX - cx) * LERP_SPEED;
             cy += (rawCY - cy) * LERP_SPEED;
 

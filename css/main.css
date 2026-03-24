@@ -138,138 +138,38 @@ img {
 }
 
 /* =================== Preloader =================== */
-#preloader {
-    position: fixed;
-    inset: 0;
-    background: var(--bg-primary);
-    z-index: 200000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    /* Safety fallback: never block pointer events on underlying UI */
-    pointer-events: none;
-}
 
-.preloader-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-}
-
-.preloader-text {
-    font-family: var(--font-heading);
-    font-size: clamp(1rem, 4vw, 1.8rem);
-    font-weight: 700;
-    letter-spacing: clamp(0.05em, 0.3em, 0.3em);
-    background: var(--gradient-text);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    max-width: 90vw;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.preloader-line {
-    width: 200px;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 2px;
-    overflow: hidden;
-    position: relative;
-}
-
-.preloader-line::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 0%;
-    background: var(--gradient-primary);
-    border-radius: 2px;
-    transition: width 0.1s linear;
-}
-
-.preloader-counter {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-}
 
 /* =================== Custom Cursor =================== */
-/* Geometric square reticle — matches grid aesthetic */
+/* Simple solid circle cursor */
 .cursor-outer {
-    width: 28px;
-    height: 28px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    border: 1px solid rgba(255, 255, 255, 0.55);
-    border-radius: 3px;   /* slight rounding — not a full circle */
-    pointer-events: none;
-    z-index: 99998;
-    will-change: transform, width, height, opacity;
-    /* NO mix-blend-mode — was rendering invisible on dark bg */
-    transition:
-        width 0.35s var(--ease-out-expo),
-        height 0.35s var(--ease-out-expo),
-        border-color 0.35s var(--ease-out-expo),
-        border-radius 0.35s var(--ease-out-expo),
-        opacity 0.35s var(--ease-out-expo);
-}
-
-.cursor-inner {
-    width: 4px;
-    height: 4px;
-    background: #ffffff;
+    width: 20px;
+    height: 20px;
+    background: #fff;
     border-radius: 50%;
     position: fixed;
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: 99999;
-    will-change: transform, opacity;
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.7);
-    transition:
-        width 0.2s var(--ease-out-expo),
-        height 0.2s var(--ease-out-expo),
-        box-shadow 0.2s var(--ease-out-expo),
-        opacity 0.2s var(--ease-out-expo);
+    z-index: 99998;
+    will-change: transform;
+    mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
+    transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Hover — same size, border sharpens, dot glows. No jarring expansion. */
+.cursor-inner {
+    display: none;
+}
+
+/* Hover: expand circle */
 .cursor-outer.hover {
-    border-color: rgba(255, 255, 255, 0.9);
-    background: transparent;
+    transform: translate(-50%, -50%) scale(1.6);
 }
 
-/* Dot stays fully visible and glows brighter on hover */
-.cursor-inner.hover {
-    box-shadow: 0 0 12px rgba(255, 255, 255, 1),
-                0 0 4px  rgba(255, 255, 255, 1);
-}
-
-/* Magnetic — modest growth, no huge 64px jump */
-.cursor-outer.magnetic {
-    width: 40px;
-    height: 40px;
-    border-color: rgba(255, 255, 255, 0.7);
-    border-radius: 5px;
-    background: transparent;
-}
-
-/* Click — compress + white flash */
+/* Click: shrink circle */
 .cursor-outer.click {
-    width: 18px;
-    height: 18px;
-    border-color: rgba(255, 255, 255, 1);
-    background: rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%) scale(0.6);
 }
 
 @media (max-width: 768px) {
@@ -621,13 +521,11 @@ img {
     pointer-events: none;
     /* Extended fades (25% each side) so sections bleed into neighbours
        with no hard visible boundary — critical for smooth scrolling feel */
-    background: linear-gradient(
-        to bottom,
-        var(--bg-primary) 0%,
-        transparent 25%,
-        transparent 75%,
-        var(--bg-primary) 100%
-    );
+    background: linear-gradient(to bottom,
+            var(--bg-primary) 0%,
+            transparent 25%,
+            transparent 75%,
+            var(--bg-primary) 100%);
     z-index: 0;
 }
 
@@ -699,7 +597,8 @@ img {
     width: 100%;
     height: 100%;
     z-index: 1;
-    opacity: 0; /* Animated by GSAP on load */
+    opacity: 0;
+    /* Animated by GSAP on load */
     pointer-events: none;
 }
 
@@ -709,11 +608,11 @@ img {
     z-index: 2;
     background:
         /* Left vignette — boosts name + text legibility */
-        linear-gradient(90deg, rgba(5,5,5,0.75) 0%, rgba(5,5,5,0.3) 42%, transparent 68%),
+        linear-gradient(90deg, rgba(5, 5, 5, 0.75) 0%, rgba(5, 5, 5, 0.3) 42%, transparent 68%),
         /* Generous bottom fade — bleeds into first section gap below */
-        linear-gradient(180deg, transparent 40%, rgba(5,5,5,0.6) 75%, var(--bg-primary) 100%),
+        linear-gradient(180deg, transparent 40%, rgba(5, 5, 5, 0.6) 75%, var(--bg-primary) 100%),
         /* Top fade so nav area merges cleanly */
-        linear-gradient(180deg, rgba(5,5,5,0.35) 0%, transparent 12%);
+        linear-gradient(180deg, rgba(5, 5, 5, 0.35) 0%, transparent 12%);
     pointer-events: none;
 }
 
@@ -725,7 +624,8 @@ img {
     filter: blur(140px);
     pointer-events: none;
     z-index: 1;
-    opacity: 0.06;     /* reduced from 0.15 — barely there */
+    opacity: 0.06;
+    /* reduced from 0.15 — barely there */
     will-change: transform;
 }
 
@@ -789,12 +689,15 @@ img {
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    max-width: 100%;        /* prevent any child from exceeding viewport */
+    max-width: 100%;
+    /* prevent any child from exceeding viewport */
     box-sizing: border-box;
     overflow: hidden;
     margin: 0 auto;
     padding: 0 var(--container-padding);
     padding-top: 2rem;
+    /* Push content right so social rail icons (~90px wide) don't overlap */
+    padding-left: calc(var(--container-padding) + 90px);
 }
 
 /* === Status Indicator === */
@@ -821,8 +724,17 @@ img {
 }
 
 @keyframes pulse-dot {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
 }
 
 .hero__status-text {
@@ -973,10 +885,12 @@ img {
         transform: translateX(-50%) translateY(0);
         opacity: 1;
     }
+
     50% {
         transform: translateX(-50%) translateY(12px);
         opacity: 0;
     }
+
     100% {
         transform: translateX(-50%) translateY(0);
         opacity: 1;
@@ -1006,7 +920,7 @@ img {
         padding-left: 1.5rem;
         padding-right: 1.5rem;
     }
-    
+
     .hero__title {
         text-align: center;
         font-size: clamp(2.5rem, 10vw, 5rem);
@@ -1046,13 +960,13 @@ img {
         overflow-wrap: break-word;
         word-break: break-word;
     }
-    
+
     .hero__actions {
         flex-direction: column;
         align-items: center;
         width: 100%;
     }
-    
+
     .hero__actions .btn {
         width: 100%;
         max-width: 320px;
@@ -1065,15 +979,32 @@ img {
     position: relative;
 }
 
+/* Soft atmospheric glow — top-right corner, very subtle */
 .about::before {
     content: '';
     position: absolute;
-    top: -200px;
-    right: -200px;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.02), transparent 70%);
+    top: -150px;
+    right: -150px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.025) 0%, transparent 65%);
     pointer-events: none;
+    z-index: 0;
+}
+
+/* Small dot-cluster accent — sits bottom-left of About, very faint */
+.about::after {
+    content: '';
+    position: absolute;
+    bottom: 5%;
+    left: -20px;
+    width: 180px;
+    height: 180px;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+    background-size: 18px 18px;
+    opacity: 0.22;
+    pointer-events: none;
+    z-index: 0;
 }
 
 .about__grid {
@@ -1151,6 +1082,10 @@ img {
     gap: 1.5rem;
 }
 
+.about__stat:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+}
+
 .about__stat {
     padding: 2rem;
     text-align: center;
@@ -1209,16 +1144,84 @@ img {
     position: relative;
     padding-top: 8rem;
     padding-bottom: 8rem;
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 10% 100%;
+    overflow: hidden;
 }
 
+/* Top/bottom fade to blend with neighbouring sections */
 .projects::before {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
     background: linear-gradient(to bottom, var(--bg-primary) 0%, transparent 10%, transparent 90%, var(--bg-primary) 100%);
+    z-index: 0;
+}
+
+/* ===== Decorative Diamond Outlines ===== */
+/* Inspired by Image 2 — large, outline-only rhombuses at ultra-low opacity */
+
+/* Diamond 1 — large, positioned top-right area behind cards */
+.projects::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    right: -8%;
+    width: 420px;
+    height: 420px;
+    border: 1px solid rgba(255, 255, 255, 0.055);
+    transform: rotate(45deg);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Diamond 2 — medium, bottom-left */
+.projects__diamond-2 {
+    position: absolute;
+    bottom: 8%;
+    left: -6%;
+    width: 280px;
+    height: 280px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transform: rotate(45deg);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Diamond 3 — small, mid-right, inner accent */
+.projects__diamond-3 {
+    position: absolute;
+    top: 40%;
+    right: 3%;
+    width: 160px;
+    height: 160px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transform: rotate(45deg);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Diamond 4 — tiny, top-center accent */
+.projects__diamond-4 {
+    position: absolute;
+    top: 5%;
+    left: 42%;
+    width: 90px;
+    height: 90px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transform: rotate(45deg);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Hide diamonds on mobile to avoid clutter */
+@media (max-width: 768px) {
+
+    .projects::after,
+    .projects__diamond-2,
+    .projects__diamond-3,
+    .projects__diamond-4 {
+        display: none;
+    }
 }
 
 /* =================== HUGH TYPOGRAPHY FOR SECTIONS =================== */
@@ -1267,6 +1270,7 @@ img {
         align-items: flex-start;
         gap: 2rem;
     }
+
     .huge-header-desc {
         max-width: 100%;
     }
@@ -1298,6 +1302,39 @@ img {
     flex-direction: column;
 }
 
+/* Shimmer / Shine sweep on hover */
+.project-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.03) 25%,
+            rgba(255, 255, 255, 0.08) 50%,
+            rgba(255, 255, 255, 0.03) 75%,
+            transparent 100%);
+    z-index: 3;
+    pointer-events: none;
+    transition: none;
+}
+
+.project-card:hover::after {
+    animation: shimmer-sweep 0.8s ease forwards;
+}
+
+@keyframes shimmer-sweep {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 120%;
+    }
+}
+
 .project-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
@@ -1308,7 +1345,6 @@ img {
     width: 100%;
     aspect-ratio: 16 / 10;
     overflow: hidden;
-    background: #1a1a1a;
 }
 
 .project-card__image-container img {
@@ -1429,17 +1465,45 @@ img {
 /* =================== SKILLS SECTION =================== */
 .skills {
     position: relative;
+    overflow: hidden;
 }
 
+/* Atmospheric left glow */
 .skills::before {
     content: '';
     position: absolute;
-    bottom: -200px;
-    right: -200px;
+    bottom: -150px;
+    left: -150px;
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.015), transparent 70%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.018) 0%, transparent 65%);
     pointer-events: none;
+    z-index: 0;
+}
+
+/* Dot-grid panel — right side, inspired by Image 3 */
+/* Tall column of dots to reinforce the structured, engineering aesthetic */
+.skills::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 220px;
+    height: 100%;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+    background-size: 22px 22px;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: linear-gradient(to left, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+}
+
+@media (max-width: 768px) {
+    .skills::after {
+        width: 100px;
+        opacity: 0.08;
+    }
 }
 
 .skills__grid {
@@ -1755,18 +1819,46 @@ img {
 /* =================== CONTACT SECTION =================== */
 .contact {
     position: relative;
+    overflow: hidden;
 }
 
+/* Centered ambient glow */
 .contact::before {
     content: '';
     position: absolute;
-    top: 0;
+    top: -100px;
     left: 50%;
     transform: translateX(-50%);
-    width: 800px;
+    width: 700px;
     height: 400px;
-    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.02), transparent 70%);
+    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.025) 0%, transparent 70%);
     pointer-events: none;
+    z-index: 0;
+}
+
+/* Dot grid — upper right corner, like Image 3 but softer */
+.contact::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 240px;
+    height: 260px;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.22) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: linear-gradient(to bottom-left, rgba(0, 0, 0, 0.7) 0%, transparent 75%);
+    -webkit-mask-image: linear-gradient(to bottom-left, rgba(0, 0, 0, 0.7) 0%, transparent 75%);
+}
+
+@media (max-width: 768px) {
+    .contact::after {
+        width: 120px;
+        height: 140px;
+        opacity: 0.07;
+    }
 }
 
 .contact__grid {
@@ -2082,6 +2174,7 @@ img {
 
 /* ─── Global overflow guard: fixes horizontal scroll on mobile ─── */
 @media (max-width: 768px) {
+
     .section,
     .hero,
     .about,
@@ -2125,8 +2218,9 @@ img {
         padding-top: 1rem;
     }
 
-    /* Hide About section pseudo-element that bleeds 200px off right edge */
-    .about::before {
+    /* Hide About section decorative pseudo-elements that bleed off edges */
+    .about::before,
+    .about::after {
         display: none;
     }
 
@@ -2238,10 +2332,6 @@ img {
         align-items: flex-start;
     }
 
-    .preloader-text {
-        font-size: clamp(0.85rem, 5vw, 1.4rem);
-        letter-spacing: 0.1em;
-    }
 }
 
 /* =================== Reveal & Stagger Animation Classes =================== */
